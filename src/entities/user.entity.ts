@@ -58,7 +58,7 @@ export class User {
 
   @OneToOne(() => SocialNetWork, { eager: true })
   @JoinColumn()
-  SocialNetwork: SocialNetWork[]
+  SocialNetwork: SocialNetWork[];
 
   @OneToOne(() => Adress, { eager: true })
   @JoinColumn()
@@ -66,9 +66,7 @@ export class User {
 
   @OneToOne(() => Position, { eager: true })
   @JoinColumn()
-  
-  positions: Position[];
-
+  positions: Position;
 
   @OneToOne(() => Request, (req) => req.users, { eager: true })
   @JoinColumn()
@@ -76,5 +74,5 @@ export class User {
 
   @OneToOne(() => Team, (team) => team.users)
   @JoinColumn()
-  team: Team[] 
+  team: Team[];
 }
