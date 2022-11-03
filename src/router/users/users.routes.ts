@@ -4,7 +4,7 @@ import createUserController from '../../controllers/users/createUser.controller'
 /* import updateUserController from '../../controllers/users/updateUser.controller';
 import deleteUserController from '../../controllers/users/deleteUser.controller';
 import softDeleteUserController from '../../controllers/users/softDeleteUser.controller'; */
-/* import listUsersController from '../../controllers/users/listUsers.controller'; */
+import listUsersController from '../../controllers/users/listUsers.controller';
 
 /* import verifyAuthTokenMiddleware from '../../middlewares/verifyAuthToken.middlewares'; */
 /* import verifyUpdateData from '../../middlewares/verifyUpdateData'; */
@@ -29,6 +29,6 @@ router.delete(
   softDeleteUserController
 ); */
 
-/* router.get('', verifyAuthTokenMiddleware, listUsersController); */
+router.get('', /* verifyAuthTokenMiddleware,  */ listUsersController);
 
 export default router;

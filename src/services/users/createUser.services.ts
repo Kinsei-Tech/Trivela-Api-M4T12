@@ -1,15 +1,17 @@
 import { hash } from 'bcryptjs';
 import AppDataSource from '../../data-source';
+import { Adress } from '../../entities/adress.entity';
 import { Position } from '../../entities/position.entity';
+import { Request } from '../../entities/requests.entity';
 import { User } from '../../entities/user.entity';
 import { AppError } from '../../errors/appError';
 import { IUser, IUserRequest } from '../../interface/users/users';
 
-const createUserServices = async (
-  userData: IUserRequest
-) /* : Promise<User> */ => {
+const createUserServices = async (userData: IUserRequest): Promise<User> => {
   const userRepository = AppDataSource.getRepository(User);
+  const adressRepository = AppDataSource.getRepository(Adress);
   const positonsRepository = AppDataSource.getRepository(Position);
+  const requestRepository = AppDataSource.getRepository(Request);
 
   let users = await userRepository.find();
 
@@ -19,6 +21,17 @@ const createUserServices = async (
   if (emailAlreadyExists) {
     throw new AppError(400, 'Email already exists');
   }
+
+  const adresses = adressRepository.create({
+    state: userData.adress.state,
+    city: userData.adress.city,
+    district: userData.adress.district,
+    street: userData.adress.street,
+    number: userData.adress.number,
+    zipCode: userData.adress.zipCode,
+    complement: userData.adress.complement,
+  });
+  await adressRepository.save(adresses);
 
   const position = positonsRepository.create({
     fixed: userData.position.fixed,
@@ -41,12 +54,14 @@ const createUserServices = async (
   newUser.isExercising = userData.isExercising;
   newUser.urlImg = userData.urlImg;
   newUser.positions = position;
+  newUser.address = adresses;
 
   const user: User = userRepository.create(newUser);
   await userRepository.save(user);
 
   const userCreated = await userRepository.findOneBy({ id: user.id });
-  return userCreated;
+
+  return userCreated!;
 };
 
 export default createUserServices;
