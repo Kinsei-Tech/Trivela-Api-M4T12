@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
-import listUsersServices from '../../services/users/listUser.services';
+import listUsersServices from '../../services/users/listUsers.services';
 import { instanceToPlain } from 'class-transformer';
-import { IUser } from '../../interface/users/users';
+import { User } from '../../entities/user.entity';
 
 const listUsersController = async (req: Request, res: Response) => {
-  const users: IUser[] = await listUsersServices();
+  const users: User[] = await listUsersServices();
   return res.status(201).json(instanceToPlain(users));
 };
 

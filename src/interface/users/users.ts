@@ -1,4 +1,3 @@
-import { Position } from '../../entities/position.entity';
 import { IAdresses } from '../adresses/adresses';
 import { ISocialNetworks } from '../netWorks/networks';
 import { IPositions } from '../positions/positions';
@@ -32,4 +31,19 @@ export interface IUser {
   socialNetworks?: ISocialNetworks;
   adress?: IAdresses;
   positions: IPositions;
+}
+
+export interface IUserUpdate {
+  name?: string;
+  email?: string;
+  password?: string;
+  age?: number;
+  height?: number;
+  weight?: number;
+  telephone?: string;
+  urlImg?: string;
+  isExercising: boolean;
+  socialNetworks?: ISocialNetworks;
+  adress?: IAdresses;
+  positions?: IPositions;
 }
