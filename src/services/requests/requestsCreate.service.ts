@@ -1,43 +1,34 @@
-import AppDataSource from "../../data-source";
-import { User } from "../../entities/user.entity";
-import { Team } from "../../entities/teams.entity";
-import { Request } from "../../entities/requests.entity";
-import { AppError } from "../../errors/appError";
-import { IRequest } from "../../interfaces/requests/index";
+import AppDataSource from '../../data-source';
+import { User } from '../../entities/user.entity';
+import { Request } from '../../entities/requests.entity';
+import { AppError } from '../../errors/appError';
+import { IRequest } from '../../interface/requests/index';
+import { Team } from '../../entities/team.entity';
 
-const requestsCreateService = async (
-  data: IRequest
-): Promise<Request> => {
+const requestsCreateService = async (data: IRequest): Promise<Request> => {
   const requestsInfoRepository = AppDataSource.getRepository(Request);
   const userInfoRepository = AppDataSource.getRepository(User);
   const teamInfoRepository = AppDataSource.getRepository(Team);
 
-  if (!data) {
-    throw new AppError("Check the required fields");
-  }
   const getTeam = await teamInfoRepository.findOneBy({
     id: data.teamId,
   });
 
   if (!getTeam) {
-    throw new AppError("Team not found", 404);
+    throw new AppError(404, 'Team not found');
   }
-  const userExist = await userInfoRepository.findOne({
-    where: data.userId,
+  const userExist = await userInfoRepository.findOneBy({
+    id: data.userId,
   });
 
-  if (userExist) {
-    throw new AppError("You already is on this team");
+  if (!userExist) {
+    throw new AppError(404, 'You already is on this team');
   }
 
-  const newUser = userInfoRepository.create(data.userId);
-  await userInfoRepository.save(newUser);
-
   const newRequests = new Request();
-  newRequests.status = data.status;
-  newRequests.position = data.position;
-  newRequests.userId = newUser;
-  newRequests.teamId = getTeam;
+  newRequests.positions = data.position;
+  newRequests.users = userExist;
+  newRequests.teams = getTeam;
 
   requestsInfoRepository.create(newRequests);
   await requestsInfoRepository.save(newRequests);
