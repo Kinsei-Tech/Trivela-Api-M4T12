@@ -58,7 +58,7 @@ export class User {
 
   @OneToOne(() => SocialNetWork, { eager: true })
   @JoinColumn()
-  SocialNetwork: SocialNetWork[];
+  socialNetwork: SocialNetWork;
 
   @OneToOne(() => Adress, { eager: true })
   @JoinColumn()
