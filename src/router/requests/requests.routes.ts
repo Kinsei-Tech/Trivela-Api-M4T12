@@ -1,17 +1,17 @@
 import { Router } from 'express';
-import {
-  requestsCreateController,
-  requestsListController,
-} from '../../controllers/requests/requests.controller';
+import deleteRequestsController from '../../controllers/requests/deleteRequests.controller';
+import requestsCreateController from '../../controllers/requests/requests.controller';
+import requestsListController from '../../controllers/requests/requestsList.controller';
+
 /* import { authUser } from '../middlewares/authUser.middleware';
 import isAdminMiddleware from '../middlewares/isAdmin.middleware'; */
 
-const requestsRoutes = Router();
-
-requestsRoutes.post(
+const router = Router();
+router.post(
   '',
   /*  authUser, isAdminMiddleware, */ requestsCreateController
 );
-requestsRoutes.get('/:id', requestsListController);
+router.get('/:id', requestsListController);
+router.delete('/delete/:id', deleteRequestsController);
 
-export default requestsRoutes;
+export default router;

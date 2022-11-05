@@ -2,7 +2,7 @@ import AppDataSource from '../../data-source';
 import { User } from '../../entities/user.entity';
 import { Request } from '../../entities/requests.entity';
 import { AppError } from '../../errors/appError';
-import { IRequest } from '../../interface/requests/index';
+import { IRequest } from '../../interface/requests/requests';
 import { Team } from '../../entities/team.entity';
 
 const requestsCreateService = async (data: IRequest): Promise<Request> => {
