@@ -1,5 +1,5 @@
 import { IAdresses } from '../adresses/adresses';
-import { ISocialNetworks } from '../netWorks/networks';
+import { ISocialNetworks, ISocialNetworksUpdate } from '../netWorks/networks';
 import { IPositions } from '../positions/positions';
 
 export interface IUserRequest {
@@ -43,7 +43,7 @@ export interface IUserUpdate {
   telephone?: string;
   urlImg?: string;
   isExercising: boolean;
-  socialNetworks?: ISocialNetworks;
+  socialNetwork?: ISocialNetworksUpdate;
   adress?: IAdresses;
   positions?: IPositions;
 }

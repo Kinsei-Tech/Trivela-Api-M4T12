@@ -1,30 +1,20 @@
-import { Repository } from 'typeorm';
+import { Repository, SimpleConsoleLogger } from 'typeorm';
 import AppDataSource from '../../data-source';
 import { Position } from '../../entities/position.entity';
+import { SocialNetWork } from '../../entities/socialNetwork.entity';
 import { User } from '../../entities/user.entity';
 import { AppError } from '../../errors/appError';
 import { IUserUpdate } from '../../interface/users/users';
 
 const updatedUserService = async (
   id: string,
-  {
-    name,
-    email,
-    password,
-    age,
-    isExercising,
-    telephone,
-    height,
-    weight,
-    urlImg,
-    adress,
-    socialNetworks,
-    positions,
-  }: IUserUpdate
+  update: IUserUpdate
 ): Promise<User | null> => {
   const userRepository: Repository<User> = AppDataSource.getRepository(User);
   const positionsRepository: Repository<Position> =
     AppDataSource.getRepository(Position);
+  const socialNetworksRepository = AppDataSource.getRepository(SocialNetWork);
+
   let findUser: User | null = await userRepository.findOneBy({
     id,
   });
@@ -36,31 +26,31 @@ const updatedUserService = async (
     id: findUser.positions.id,
   });
 
-  await positionsRepository.update(positionsUser!.id, {
-    fixed: positions?.fixed ? positions.fixed : positionsUser?.fixed,
-    goalkeeper: positions?.goalkeeper
-      ? positions.goalkeeper
-      : positionsUser?.goalkeeper,
-    leftwing: positions?.leftwing
-      ? positions.leftwing
-      : positionsUser?.leftwing,
-    rightwing: positions?.rightwing
-      ? positions.rightwing
-      : positionsUser?.rightwing,
-    target: positions?.target ? positions.target : positionsUser?.target,
-  });
+  if (findUser.socialNetwork === null && update.socialNetwork) {
+    const socialNetworksCreated = socialNetworksRepository.create({
+      ...update.socialNetwork,
+    });
+    await socialNetworksRepository.save(socialNetworksCreated);
+    userRepository.update(id, {
+      socialNetwork: socialNetworksCreated,
+    });
+  } else if (update.socialNetwork) {
+    await socialNetworksRepository.update(findUser.socialNetwork.id, {
+      ...update.socialNetwork,
+    });
+  }
 
-  await userRepository.update(id, {
-    name: name ? name : findUser.name,
-    email: email ? email : findUser.email,
-    password: password ? password : findUser.password,
-    age: age ? age : findUser.age,
-    isExercising: isExercising ? isExercising : findUser.isExercising,
-    telephone: telephone ? telephone : findUser.telephone,
-    height: height ? height : findUser.height,
-    weight: weight ? weight : findUser.weight,
-    urlImg: urlImg ? urlImg : findUser.urlImg,
-  });
+  if (update.positions) {
+    await positionsRepository.update(positionsUser!.id, {
+      ...update.positions,
+    });
+  }
+
+  const updateUser = { ...update };
+  delete updateUser.socialNetwork;
+  delete updateUser.positions;
+
+  await userRepository.update(id, { ...updateUser });
   findUser = await userRepository.findOneBy({
     id,
   });
