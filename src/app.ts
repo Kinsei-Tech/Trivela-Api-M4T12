@@ -4,12 +4,16 @@ import express, { Request, Response, NextFunction } from 'express';
 import usersRoutes from './router/users/users.routes';
 import { AppError } from './errors/appError';
 import userLoginRouter from './router/login/userLogin.routes';
+import ownerRouter from './router/owners/owners.routes';
+import ownerLoginRouter from './router/login/ownerLogin.routes';
 
 const app = express();
 app.use(express.json());
 
 app.use('/users', usersRoutes);
 app.use('/users/login', userLoginRouter);
+app.use('/owners', ownerRouter);
+app.use('/owners/login', ownerLoginRouter);
 
 app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
   if (err instanceof AppError) {
