@@ -70,7 +70,6 @@ describe('/users', () => {
     const response = await request(app)
       .get('/users')
       .set('Authorization', `Bearer`);
-    expect(response.body).toHaveProperty('status');
     expect(response.body).toHaveProperty('message');
     expect(response.status).toBe(401);
   });
@@ -98,7 +97,6 @@ describe('/users', () => {
       .post('/users/create')
       .send(mokedUser2);
     const response = await request(app).get(`/users/${userCreate.body.id}`);
-    expect(response.body).toHaveProperty('status');
     expect(response.body).toHaveProperty('message');
     expect(response.status).toBe(401);
   });
@@ -130,7 +128,6 @@ describe('/users', () => {
       .patch(`/users/update/${responseAllUser.body[0].id}`)
       .send(mokedUserNewSocialNetwork);
 
-    expect(response.body).toHaveProperty('status');
     expect(response.body).toHaveProperty('message');
     expect(response.status).toBe(401);
   });
@@ -145,8 +142,6 @@ describe('/users', () => {
     const response = await request(app)
       .patch(`/users/update/${responseAllUser.body[1].id}`)
       .send(mokedUserNewSocialNetwork);
-
-    expect(response.body).toHaveProperty('status');
     expect(response.body).toHaveProperty('message');
     expect(response.status).toBe(401);
   });
@@ -196,9 +191,8 @@ describe('/users', () => {
       .patch(`/users/update/${responseAllUser.body[1].id}`)
       .set('Authorization', `Bearer ${resultLogin.body.token}`)
       .send(mokedUserUpdatePositions);
-    expect(response.body).toHaveProperty('status');
     expect(response.body).toHaveProperty('message');
-    expect(response.status).toBe(401);
+    expect(response.status).toBe(404);
   });
 
   test('shouldnt be able to update positions without auth', async () => {
@@ -211,7 +205,6 @@ describe('/users', () => {
     const response = await request(app)
       .patch(`/users/update/${responseAllUser.body[0].id}`)
       .send(mokedUserUpdatePositions);
-    expect(response.body).toHaveProperty('status');
     expect(response.body).toHaveProperty('message');
     expect(response.status).toBe(401);
   });
@@ -233,7 +226,7 @@ describe('/users', () => {
     expect(response.body.address.number).toBe('66');
     expect(response.body.address.complement).toBe('vazio');
     expect(response.body.address.city).toBe('Hueco');
-    expect(response.body.address.cstate).toBe('Mundo');
+    expect(response.body.address.state).toBe('Mundo');
     expect(response.status).toBe(200);
   });
 
@@ -248,9 +241,8 @@ describe('/users', () => {
       .patch(`/users/update/${responseAllUser.body[1].id}`)
       .set('Authorization', `Bearer ${resultLogin.body.token}`)
       .send(mokedUserupdateAdress);
-    expect(response.body).toHaveProperty('status');
     expect(response.body).toHaveProperty('message');
-    expect(response.status).toBe(401);
+    expect(response.status).toBe(404);
   });
 
   test('should not be able to disable another user', async () => {
@@ -263,9 +255,7 @@ describe('/users', () => {
     const response = await request(app)
       .delete(`/users/desactive/${responseAllUser.body[1].id}`)
       .set('Authorization', `Bearer ${resultLogin.body.token}`);
-    expect(response.body).toHaveProperty('status');
-    expect(response.body).toHaveProperty('message');
-    expect(response.status).toBe(401);
+    expect(response.status).toBe(404);
   });
 
   test('should not be able to disable user without auth', async () => {
@@ -278,7 +268,6 @@ describe('/users', () => {
     const response = await request(app).delete(
       `/users/desactive/${responseAllUser.body[1].id}`
     );
-    expect(response.body).toHaveProperty('status');
     expect(response.body).toHaveProperty('message');
     expect(response.status).toBe(401);
   });
@@ -293,9 +282,7 @@ describe('/users', () => {
     const response = await request(app)
       .delete(`/users/delete/${responseAllUser.body[1].id}`)
       .set('Authorization', `Bearer ${resultLogin.body.token}`);
-    expect(response.body).toHaveProperty('status');
-    expect(response.body).toHaveProperty('message');
-    expect(response.status).toBe(401);
+    expect(response.status).toBe(404);
   });
   test('should not be able to delete user without auth', async () => {
     const resultLogin = await request(app)
@@ -307,7 +294,6 @@ describe('/users', () => {
     const response = await request(app).delete(
       `/users/delete/${responseAllUser.body[1].id}`
     );
-    expect(response.body).toHaveProperty('status');
     expect(response.body).toHaveProperty('message');
     expect(response.status).toBe(401);
   });

@@ -1,5 +1,6 @@
 import { Repository, SimpleConsoleLogger } from 'typeorm';
 import AppDataSource from '../../data-source';
+import { Adress } from '../../entities/adress.entity';
 import { Position } from '../../entities/position.entity';
 import { SocialNetWork } from '../../entities/socialNetwork.entity';
 import { User } from '../../entities/user.entity';
@@ -14,6 +15,7 @@ const updatedUserService = async (
   const positionsRepository: Repository<Position> =
     AppDataSource.getRepository(Position);
   const socialNetworksRepository = AppDataSource.getRepository(SocialNetWork);
+  const adressRepository = AppDataSource.getRepository(Adress);
 
   let findUser: User | null = await userRepository.findOneBy({
     id,
@@ -46,9 +48,20 @@ const updatedUserService = async (
     });
   }
 
+  /* const adressUser = await adressRepository.findOneBy({
+    id: findUser.address.id,
+  }); */
+  if (update.address) {
+    console.log(update.address);
+    await adressRepository.update(findUser.address.id, {
+      ...update.address,
+    });
+  }
+
   const updateUser = { ...update };
   delete updateUser.socialNetwork;
   delete updateUser.positions;
+  delete updateUser.address;
 
   await userRepository.update(id, { ...updateUser });
   findUser = await userRepository.findOneBy({

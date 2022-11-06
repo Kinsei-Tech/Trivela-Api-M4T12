@@ -44,6 +44,6 @@ export interface IUserUpdate {
   urlImg?: string;
   isExercising: boolean;
   socialNetwork?: ISocialNetworksUpdate;
-  adress?: IAdresses;
+  address?: IAdresses;
   positions?: IPositions;
 }
