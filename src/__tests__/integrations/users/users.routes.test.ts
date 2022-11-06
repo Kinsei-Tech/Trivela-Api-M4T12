@@ -297,4 +297,33 @@ describe('/users', () => {
     expect(response.body).toHaveProperty('message');
     expect(response.status).toBe(401);
   });
+
+  test('should be able to disable the user', async () => {
+    const resultLogin = await request(app)
+      .post('/users/login')
+      .send(mockedCorrectLogin);
+    const responseAllUser = await request(app)
+      .get('/users')
+      .set('Authorization', `Bearer ${resultLogin.body.token}`);
+    const response = await request(app)
+      .delete(`/users/desactive/${responseAllUser.body[0].id}`)
+      .set('Authorization', `Bearer ${resultLogin.body.token}`);
+    const responseUser = await request(app)
+      .get(`/users/${responseAllUser.body[0].id}`)
+      .set('Authorization', `Bearer ${resultLogin.body.token}`);
+    expect(responseUser.body.isActive).toBe(false);
+    expect(response.status).toBe(204);
+  });
+  test('should be able to delete the user', async () => {
+    const resultLogin = await request(app)
+      .post('/users/login')
+      .send(mockedCorrectLogin);
+    const responseAllUser = await request(app)
+      .get('/users')
+      .set('Authorization', `Bearer ${resultLogin.body.token}`);
+    const response = await request(app)
+      .delete(`/users/delete/${responseAllUser.body[0].id}`)
+      .set('Authorization', `Bearer ${resultLogin.body.token}`);
+    expect(response.status).toBe(204);
+  });
 });
