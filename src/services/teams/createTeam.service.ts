@@ -21,7 +21,6 @@ const createTeamService = async (
     state,
   } = teamData;
   const { fixed, goalkeeper, leftwing, rightwing, target } = positions;
-  console.log('Estou no service');
   const teamRepository = AppDataSource.getRepository(Team);
   const userRepository = AppDataSource.getRepository(User);
   const fieldRepository = AppDataSource.getRepository(Field);
