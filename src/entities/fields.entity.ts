@@ -1,27 +1,44 @@
-import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Adress } from "./adress.entity";
-import { Owner } from "./owner.entity"
-import { Team } from "./team.entity";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { Adress } from './adress.entity';
+import { Owner } from './owner.entity';
+import { Team } from './team.entity';
 
-@Entity('fields') 
-export class Field{
-    @PrimaryGeneratedColumn('uuid')
-    id: string
+@Entity('fields')
+export class Field {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @Column()
-    name: string
+  @Column()
+  name: string;
 
+  @Column('boolean', { default: true, nullable: true })
+  isActive: boolean = true;
 
-    @ManyToOne(() => Owner, (owner) => owner, {eager: true})
-    @JoinColumn()
-    owners: Owner
+  @CreateDateColumn({ nullable: true })
+  createdAt: Date;
 
+  @UpdateDateColumn({ nullable: true })
+  updatedAt: Date;
 
-    @OneToOne(() => Adress, {eager: true})
-    @JoinColumn()
-    adresses: Adress
+  @ManyToOne(() => Owner, (owner) => owner, { eager: true })
+  @JoinColumn()
+  owner: Owner;
 
-    @OneToMany(() => Team, (team) => team.fields)
-    team: Team[]
+  @OneToOne(() => Adress, { eager: true })
+  @JoinColumn()
+  address: Adress;
 
+  @ManyToMany(() => Team, (team) => team.fields)
+  team: Team[];
 }
