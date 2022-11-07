@@ -11,7 +11,7 @@ export const mokedUser = {
   telephone: '999999999',
   urlImg:
     'https://i.pinimg.com/736x/1e/60/11/1e6011d677d527b624c60d9cd0240c98.jpg',
-  adress: {
+  address: {
     street: 'Rua Pe. Frederico',
     district: 'Santa Catarina',
     zipCode: '36035-150',
