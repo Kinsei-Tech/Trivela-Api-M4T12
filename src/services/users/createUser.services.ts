@@ -1,6 +1,6 @@
 import { hash } from 'bcryptjs';
 import AppDataSource from '../../data-source';
-import { Adress } from '../../entities/adress.entity';
+import { Address } from '../../entities/address.entity';
 import { Position } from '../../entities/position.entity';
 import { Request } from '../../entities/requests.entity';
 import { User } from '../../entities/user.entity';
@@ -9,7 +9,7 @@ import { IUser, IUserRequest } from '../../interface/users/users';
 
 const createUserServices = async (userData: IUserRequest): Promise<User> => {
   const userRepository = AppDataSource.getRepository(User);
-  const adressRepository = AppDataSource.getRepository(Adress);
+  const addressRepository = AppDataSource.getRepository(Address);
   const positonsRepository = AppDataSource.getRepository(Position);
   const requestRepository = AppDataSource.getRepository(Request);
 
@@ -22,16 +22,16 @@ const createUserServices = async (userData: IUserRequest): Promise<User> => {
     throw new AppError(400, 'Email already exists');
   }
 
-  const adresses = adressRepository.create({
-    state: userData.adress.state,
-    city: userData.adress.city,
-    district: userData.adress.district,
-    street: userData.adress.street,
-    number: userData.adress.number,
-    zipCode: userData.adress.zipCode,
-    complement: userData.adress.complement,
+  const addresses = addressRepository.create({
+    state: userData.address.state,
+    city: userData.address.city,
+    district: userData.address.district,
+    street: userData.address.street,
+    number: userData.address.number,
+    zipCode: userData.address.zipCode,
+    complement: userData.address.complement,
   });
-  await adressRepository.save(adresses);
+  await addressRepository.save(addresses);
 
   const position = positonsRepository.create({
     fixed: userData.position.fixed,
@@ -54,7 +54,7 @@ const createUserServices = async (userData: IUserRequest): Promise<User> => {
   newUser.isExercising = userData.isExercising;
   newUser.urlImg = userData.urlImg;
   newUser.positions = position;
-  newUser.address = adresses;
+  newUser.address = addresses;
 
   const user: User = userRepository.create(newUser);
   await userRepository.save(user);
