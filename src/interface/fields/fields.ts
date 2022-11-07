@@ -1,10 +1,10 @@
-import { IAdresses } from '../adresses/adresses';
+import { IAddresses } from '../addresses/addresses';
 import { IOwner } from '../owners/owners';
 
 export interface IFieldRequest {
   name: string;
   ownerId: string;
-  address: IAdresses;
+  address: IAddresses;
 }
 
 export interface IField extends Omit<IFieldRequest, 'ownerId'> {
