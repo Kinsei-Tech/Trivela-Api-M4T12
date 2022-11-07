@@ -1,13 +1,16 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
-import { Adress } from './adress.entity';
+import { Address } from './address.entity';
 import { Owner } from './owner.entity';
 import { Team } from './team.entity';
 
@@ -19,17 +22,20 @@ export class Field {
   @Column()
   name: string;
 
-  @Column({ default: true })
-  isActive: boolean;
+  @Column('boolean', { default: true, nullable: true })
+  isActive: boolean = true;
+
+  @CreateDateColumn({ nullable: true })
+  createdAt: Date;
+
+  @UpdateDateColumn({ nullable: true })
+  updatedAt: Date;
 
   @ManyToOne(() => Owner, (owner) => owner, { eager: true })
   @JoinColumn()
-  owners: Owner;
+  owner: Owner;
 
-  @OneToOne(() => Adress, { eager: true })
+  @OneToOne(() => Address)
   @JoinColumn()
-  adresses: Adress;
-
-  @OneToMany(() => Team, (team) => team.fields)
-  team: Team[];
+  address: Address;
 }

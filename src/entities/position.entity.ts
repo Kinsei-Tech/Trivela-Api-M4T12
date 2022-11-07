@@ -1,22 +1,34 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity('positions')
-export class Position{
-    @PrimaryGeneratedColumn('uuid')
-    id: string
+export class Position {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @Column()
-    target: boolean
+  @CreateDateColumn({ nullable: true })
+  createdAt: Date;
 
-    @Column()
-    goalkeeper: boolean
+  @UpdateDateColumn({ nullable: true })
+  updatedAt: Date;
 
-    @Column()
-    leftwing: boolean
- 
-    @Column()
-    rightwing: boolean
+  @Column()
+  target: boolean;
 
-    @Column()
-    fixed: boolean
+  @Column()
+  goalkeeper: boolean;
+
+  @Column()
+  leftwing: boolean;
+
+  @Column()
+  rightwing: boolean;
+
+  @Column()
+  fixed: boolean;
 }

@@ -1,5 +1,5 @@
 import AppDataSource from '../../data-source';
-import { Adress } from '../../entities/adress.entity';
+import { Address } from '../../entities/address.entity';
 import { Field } from '../../entities/fields.entity';
 import { Owner } from '../../entities/owner.entity';
 import { AppError } from '../../errors/appError';
@@ -7,6 +7,7 @@ import { IFieldRequest } from '../../interface/fields/fields';
 
 const createFieldService = async (fieldData: IFieldRequest): Promise<Field> => {
   const fieldsRepository = AppDataSource.getRepository(Field);
+
   const ownersRepository = AppDataSource.getRepository(Owner);
   const adressesRepository = AppDataSource.getRepository(Adress);
 
@@ -24,6 +25,7 @@ const createFieldService = async (fieldData: IFieldRequest): Promise<Field> => {
   newField.isActive = fieldData.isActive;
   newField.owners = getOwner;
   newField.adresses = newAdresses;
+
 
   const field: Field = fieldsRepository.create(newField);
   await fieldsRepository.save(field);

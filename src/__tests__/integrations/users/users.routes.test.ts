@@ -138,7 +138,6 @@ describe('/users', () => {
     const responseAllUser = await request(app)
       .get('/users')
       .set('Authorization', `Bearer ${resultLogin.body.token}`);
-    console.log(responseAllUser.body);
     const response = await request(app)
       .patch(`/users/update/${responseAllUser.body[1].id}`)
       .send(mokedUserNewSocialNetwork);
@@ -253,7 +252,7 @@ describe('/users', () => {
       .get('/users')
       .set('Authorization', `Bearer ${resultLogin.body.token}`);
     const response = await request(app)
-      .delete(`/users/desactive/${responseAllUser.body[1].id}`)
+      .delete(`/users/deactivate/${responseAllUser.body[1].id}`)
       .set('Authorization', `Bearer ${resultLogin.body.token}`);
     expect(response.status).toBe(404);
   });
@@ -266,7 +265,7 @@ describe('/users', () => {
       .get('/users')
       .set('Authorization', `Bearer ${resultLogin.body.token}`);
     const response = await request(app).delete(
-      `/users/desactive/${responseAllUser.body[1].id}`
+      `/users/deactivate/${responseAllUser.body[1].id}`
     );
     expect(response.body).toHaveProperty('message');
     expect(response.status).toBe(401);
@@ -306,7 +305,7 @@ describe('/users', () => {
       .get('/users')
       .set('Authorization', `Bearer ${resultLogin.body.token}`);
     const response = await request(app)
-      .delete(`/users/desactive/${responseAllUser.body[0].id}`)
+      .delete(`/users/deactivate/${responseAllUser.body[0].id}`)
       .set('Authorization', `Bearer ${resultLogin.body.token}`);
     const responseUser = await request(app)
       .get(`/users/${responseAllUser.body[0].id}`)
