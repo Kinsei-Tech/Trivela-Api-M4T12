@@ -14,7 +14,7 @@ import listUserController from '../../controllers/users/listUser.controller';
 const router = Router();
 
 router.post('/create', createUserController);
-router.delete('/desactive/:id', softDeleteUserController);
+router.delete('/deactivate/:id', softDeleteUserController);
 router.delete('/delete/:id', deleteUserController);
 router.get('', /* verifyAuthTokenMiddleware,  */ listUsersController);
 router.get('/:id', /* verifyAuthTokenMiddleware,  */ listUserController);
