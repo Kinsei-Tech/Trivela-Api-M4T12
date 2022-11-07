@@ -10,7 +10,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Adress } from './adress.entity';
+import { Address } from './address.entity';
 import { Owner } from './owner.entity';
 import { Team } from './team.entity';
 
@@ -35,10 +35,7 @@ export class Field {
   @JoinColumn()
   owner: Owner;
 
-  @OneToOne(() => Adress, { eager: true })
+  @OneToOne(() => Address)
   @JoinColumn()
-  address: Adress;
-
-  @ManyToMany(() => Team, (team) => team.fields)
-  team: Team[];
+  address: Address;
 }

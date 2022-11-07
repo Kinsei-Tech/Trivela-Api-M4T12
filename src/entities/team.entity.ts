@@ -20,7 +20,7 @@ import { User } from './user.entity';
 @Entity('teams')
 export class Team {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  readonly id: string;
 
   @Column({ unique: true })
   name: string;
@@ -49,11 +49,11 @@ export class Team {
   @Column('boolean', { default: true, nullable: true })
   isActive: boolean = true;
 
-  @ManyToOne(() => User, (user) => user, { eager: true })
+  @ManyToOne(() => User, (user) => user.team, { eager: true })
   @JoinColumn()
   user: User;
 
-  @ManyToMany(() => Field, {
+  @ManyToMany((type) => Field, {
     eager: true,
     nullable: true,
   })
@@ -64,11 +64,11 @@ export class Team {
   @JoinColumn()
   positions: Position;
 
-  @ManyToMany(() => Participant, {
+  @OneToMany(() => Participant, (participant) => participant.team, {
     eager: true,
     nullable: true,
   })
-  @JoinTable()
+  @JoinColumn()
   participants: Participant[];
 
   @OneToMany(() => Request, (req) => req.teams)

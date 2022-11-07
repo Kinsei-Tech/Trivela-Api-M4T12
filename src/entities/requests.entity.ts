@@ -22,7 +22,7 @@ export class Request {
 
   @ManyToOne(() => User, (user) => user.request)
   @JoinColumn()
-  users: User;
+  user: User;
 
   @ManyToOne(() => Team, (team) => team.request)
   @JoinColumn()

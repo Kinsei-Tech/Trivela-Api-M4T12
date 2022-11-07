@@ -20,11 +20,11 @@ export class Participant {
   @Column()
   position: number;
 
-  @ManyToMany(() => Team, (team) => team.id, { eager: true })
-  @JoinTable()
-  team: Team;
-
   @OneToOne(() => User, { eager: true })
   @JoinColumn()
   user: User;
+
+  @ManyToOne(() => Team, (team) => team.participants)
+  @JoinColumn()
+  team: Team;
 }

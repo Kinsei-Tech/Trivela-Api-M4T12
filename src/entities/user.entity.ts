@@ -4,11 +4,12 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Adress } from './adress.entity';
+import { Address } from './address.entity';
 import { Position } from './position.entity';
 import { Request } from './requests.entity';
 import { SocialNetWork } from './socialNetwork.entity';
@@ -60,19 +61,19 @@ export class User {
   @JoinColumn()
   socialNetwork: SocialNetWork;
 
-  @OneToOne(() => Adress, { eager: true })
+  @OneToOne(() => Address, { eager: true })
   @JoinColumn()
-  address: Adress;
+  address: Address;
 
   @OneToOne(() => Position, { eager: true })
   @JoinColumn()
   positions: Position;
 
-  @OneToOne(() => Request, (req) => req.users, { eager: true })
+  @OneToMany(() => Request, (req) => req.user, { eager: true })
   @JoinColumn()
   request: Request[];
 
-  @OneToOne(() => Team, (team) => team.users)
+  @OneToMany(() => Team, (team) => team.user)
   @JoinColumn()
   team: Team[];
 }
