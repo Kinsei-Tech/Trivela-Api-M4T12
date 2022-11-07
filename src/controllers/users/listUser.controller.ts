@@ -9,4 +9,7 @@ const listUserController = async (req: Request, res: Response) => {
   return res.status(201).json(instanceToPlain(users));
 };
 
+//status 201 não seria usado apenas quando criamos um novo usuário, time, address...?
+//Acredito que aqui seria o status 200 default
+
 export default listUserController;
