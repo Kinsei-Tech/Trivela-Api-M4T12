@@ -6,6 +6,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Exclude } from 'class-transformer';
+
 
 @Entity('owners')
 export class Owner {
@@ -15,18 +17,19 @@ export class Owner {
   @Column()
   name: string;
 
-  @Column()
-  email: string;
-
-  @Column('boolean', { default: true, nullable: true })
-  isActive: boolean = true;
-
   @CreateDateColumn({ nullable: true })
   createdAt: Date;
 
   @UpdateDateColumn({ nullable: true })
   updatedAt: Date;
 
+  @Column({ unique: true })
+  email: string;
+
+  @Column({ default: true })
+  isActive: boolean;
+
   @Column()
+  @Exclude()
   password: string;
 }

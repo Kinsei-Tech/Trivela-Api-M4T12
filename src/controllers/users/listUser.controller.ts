@@ -6,7 +6,7 @@ import { User } from '../../entities/user.entity';
 const listUserController = async (req: Request, res: Response) => {
   const id: string = req.params.id;
   const users: User = await listUserServices(id);
-  return res.status(201).json(instanceToPlain(users));
+  return res.json(instanceToPlain(users));
 };
 
 //status 201 não seria usado apenas quando criamos um novo usuário, time, address...?
