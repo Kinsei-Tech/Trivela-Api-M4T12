@@ -1,7 +1,7 @@
-/*  import { IUserLogin, IUserRequest } from '../../interfaces/users';
-import { IRequest } from '../../../interface/requests';
+import { IUserRequest } from '../../../interface/users/users';
+import { IRequest } from '../../../interface/requests/requests';
 import { ILogin } from '../../../interface/login';
-
+/*
 export const mockedUser: IUserRequest = {
   name: 'Laís',
   email: 'lais@mail.com',
@@ -15,7 +15,7 @@ export const mockedAdmin: IUserRequest = {
   isAdm: true,
   password: '123456',
 };
-
+*/
 export const mockedUserLogin: ILogin = {
   email: 'lais@mail.com',
   password: '123456',
@@ -25,11 +25,11 @@ export const mockedAdminLogin: ILogin = {
   email: 'lucas@mail.com',
   password: '123456',
 };
-
-export const mockedTeam: ITeamRequest = {
+/*
+export const mockedTeam: ITeam = {
   name: 'Canela de Vidro',
 };
-
+*/
 export const mockedRequest: IRequest = {
   position: 3,
   status: 1,
@@ -41,7 +41,7 @@ export const mockedPropertyInvalidUserId: IRequest = {
   position: 3,
   status: 1,
   userId: '8f9ae6ce-e36c-4d9d-9bd7-b4c98cb4e4f4',
-  categoryId: '',
+  teamId: '',
 };
 
 export const mockedRequestInvalidStatus: IRequest = {
@@ -55,6 +55,12 @@ export const mockedRequestInvalidTeamId: IRequest = {
   position: 3,
   status: 1,
   userId: '',
-  categoryId: '8f9ae6ce-e36c-4d9d-9bd7-b4c98cb4e4f4',
+  teamId: '8f9ae6ce-e36c-4d9d-9bd7-b4c98cb4e4f4',
 };
- */
+
+export const mockedRequestInvalidPosition: IRequest = {
+  position: 6,
+  status: 1,
+  userId: '',
+  teamId: '',
+};

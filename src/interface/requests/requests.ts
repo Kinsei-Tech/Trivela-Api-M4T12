@@ -1,8 +1,6 @@
-import { IPositions } from '../positions/positions';
-
 export interface IRequest {
     status: number
-    positions?: IPositions;
+    position: number;
     userId: string
     teamId: string
 }
@@ -13,5 +11,5 @@ export interface IRequestReq extends IRequest{
 
 export interface IRequestUpdate{
     status?: number;
-    positions?: IPositions;
+    positions?: number;
 }
