@@ -13,14 +13,20 @@ import verifyIdAuthMiddleware from '../../middlewares/verifyIdAuth.middleware';
 const router = Router();
 
 router.post('/create', createUserController);
-
+router.get('', ensureAuthMiddleware, listUsersController);
+router.get('/:id', ensureAuthMiddleware, listUserController);
+router.patch(
+  '/update/:id',
+  ensureAuthMiddleware,
+  verifyIdAuthMiddleware,
+  updateUserController
+);
 router.delete(
-  '/desactive/:id',
+  '/deactivate/:id',
   ensureAuthMiddleware,
   verifyIdAuthMiddleware,
   softDeleteUserController
 );
-router.get('', ensureAuthMiddleware, listUsersController);
 
 router.delete(
   '/delete/:id',
@@ -29,13 +35,5 @@ router.delete(
   deleteUserController
 );
 
-router.get('/:id', ensureAuthMiddleware, listUserController);
-
-router.patch(
-  '/update/:id',
-  ensureAuthMiddleware,
-  verifyIdAuthMiddleware,
-  updateUserController
-);
 
 export default router;

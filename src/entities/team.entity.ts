@@ -1,49 +1,76 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Field } from "./fields.entity";
-import { Participant } from "./participant.entity";
-import { Position } from "./position.entity";
-import { Request } from "./requests.entity";
-import { User } from "./user.entity";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { Field } from './fields.entity';
+import { Participant } from './participant.entity';
+import { Position } from './position.entity';
+import { Request } from './requests.entity';
+import { User } from './user.entity';
 
 @Entity('teams')
 export class Team {
-    @PrimaryGeneratedColumn('uuid')
-    id: string
+  @PrimaryGeneratedColumn('uuid')
+  readonly id: string;
 
-    @Column()
-    name: string
+  @Column({ unique: true })
+  name: string;
 
-    @Column()
-    description: string
+  @Column()
+  description: string;
 
-    @Column()
-    state: string
+  @Column()
+  state: string;
 
-    @Column()
-    city: string
+  @Column()
+  city: string;
 
-    @Column({nullable: true})
-    maxWeight: number
+  @Column({ nullable: true })
+  maxWeight: number;
 
-    @Column({nullable: true})
-    maxAge: number
+  @Column({ nullable: true })
+  maxAge: number;
 
-    @ManyToOne(() => User, (user) => user, {eager: true})
-    @JoinColumn()
-    users: User[]
+  @CreateDateColumn({ nullable: true })
+  createdAt: Date;
 
-    @ManyToOne(() => Field, (field) => field, {eager: true})
-    @JoinColumn()
-    fields: Field[]
+  @UpdateDateColumn({ nullable: true })
+  updatedAt: Date;
 
-    @OneToOne(() => Position, {eager: true})
-    @JoinColumn()
-    positions: Position[]
+  @Column('boolean', { default: true, nullable: true })
+  isActive: boolean = true;
 
-    @ManyToOne(() => Participant, (participant) => participant, {eager: true, nullable: true})
-    @JoinColumn()
-    participants: Participant[]
+  @ManyToOne(() => User, (user) => user.team, { eager: true })
+  @JoinColumn()
+  user: User;
 
-    @OneToMany(() => Request, (req) => req.teams, )
-    request: Request[]
-}   
+  @ManyToMany((type) => Field, {
+    eager: true,
+    nullable: true,
+  })
+  @JoinTable()
+  fields: Field[];
+
+  @OneToOne(() => Position, { eager: true })
+  @JoinColumn()
+  positions: Position;
+
+  @OneToMany(() => Participant, (participant) => participant.team, {
+    eager: true,
+    nullable: true,
+  })
+  @JoinColumn()
+  participants: Participant[];
+
+  @OneToMany(() => Request, (req) => req.teams)
+  request: Request[];
+}

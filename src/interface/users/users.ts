@@ -1,4 +1,4 @@
-import { IAdresses } from '../adresses/adresses';
+import { IAddresses } from '../addresses/addresses';
 import { ISocialNetworks, ISocialNetworksUpdate } from '../netWorks/networks';
 import { IPositions } from '../positions/positions';
 
@@ -11,7 +11,7 @@ export interface IUserRequest {
   weight: number;
   telephone: string;
   urlImg: string;
-  adress: IAdresses;
+  address: IAddresses;
   position: IPositions;
   isExercising: boolean;
 }
@@ -29,7 +29,7 @@ export interface IUser {
   telephone: string;
   urlImg: string;
   socialNetworks?: ISocialNetworks;
-  adress?: IAdresses;
+  address?: IAddresses;
   positions: IPositions;
 }
 
@@ -44,6 +44,6 @@ export interface IUserUpdate {
   urlImg?: string;
   isExercising: boolean;
   socialNetwork?: ISocialNetworksUpdate;
-  address?: IAdresses;
+  address?: IAddresses;
   positions?: IPositions;
 }
