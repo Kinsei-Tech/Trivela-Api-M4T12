@@ -1,8 +1,8 @@
-/* import { DataSource } from "typeorm";
+import { DataSource } from "typeorm";
 import AppDataSource from "../../../data-source";
 import request from "supertest"
 import app from "../../../app";
-import {mockedUser, mockedAdmin, mockedAdminLogin, mockedTeam, mockedRequest, mockedRequestInvalidTeamId, mockedRequestInvalidPosition, mockedUserLogin} from "../../mocks"
+import {mockedUser, mockedAdmin, mockedAdminLogin, mockedTeam, mockedRequest, mockedRequestInvalidTeamId, mockedRequestInvalidPosition, mockedUserLogin} from "../../mocks/requests/index"
 
 
 describe("/requests", () => {
@@ -32,11 +32,11 @@ describe("/requests", () => {
         mockedRequest.teamId = teams.body[0].id
         const response = await request(app).post('/requests').set("Authorization", `Bearer ${adminLoginResponse.body.token}`).send(mockedRequest)
 
-        expect(response.body).toHaveRequest("id")
-        expect(response.body).toHaveRequest("status")
-        expect(response.body).toHaveRequest("position")
-        expect(response.body).toHaveRequest("teamId")
-        expect(response.body).toHaveRequest("userId")
+        expect(response.body).toHaveProperty("id")
+        expect(response.body).toHaveProperty("status")
+        expect(response.body).toHaveProperty("position")
+        expect(response.body).toHaveProperty("teamId")
+        expect(response.body).toHaveProperty("userId")
         expect(response.status).toBe(201)
      
     })
@@ -48,7 +48,7 @@ describe("/requests", () => {
         mockedRequest.teamId = teams.body[0].id
         const response = await request(app).post('/requests').set("Authorization", `Bearer ${adminLoginResponse.body.token}`).send(mockedRequest)
 
-        expect(response.body).toHaveRequest("message")
+        expect(response.body).toHaveProperty("message")
         expect(response.status).toBe(400)
      
     })
@@ -59,7 +59,7 @@ describe("/requests", () => {
         mockedRequest.teamId = teams.body[0].id
         const response = await request(app).post('/requests').set("Authorization", `Bearer ${userLoginResponse.body.token}`).send(mockedRequest)
 
-        expect(response.body).toHaveRequest("message")
+        expect(response.body).toHaveProperty("message")
         expect(response.status).toBe(403)
      
     })
@@ -69,7 +69,7 @@ describe("/requests", () => {
         mockedRequest.teamId = teams.body[0].id
         const response = await request(app).post('/requests').send(mockedRequest)
 
-        expect(response.body).toHaveRequest("message")
+        expect(response.body).toHaveProperty("message")
         expect(response.status).toBe(401)
      
     })
@@ -78,7 +78,7 @@ describe("/requests", () => {
         const adminLoginResponse = await request(app).post("/login").send(mockedAdminLogin);
         const response = await request(app).post('/requests').set("Authorization", `Bearer ${adminLoginResponse.body.token}`).send(mockedRequestInvalidTeamId)
 
-        expect(response.body).toHaveRequest("message")
+        expect(response.body).toHaveProperty("message")
         expect(response.status).toBe(404)
      
     })
@@ -87,7 +87,7 @@ describe("/requests", () => {
         const adminLoginResponse = await request(app).post("/login").send(mockedAdminLogin);
         const response = await request(app).post('/requests').set("Authorization", `Bearer ${adminLoginResponse.body.token}`).send(mockedRequestInvalidPosition)
 
-        expect(response.body).toHaveRequest("message")
+        expect(response.body).toHaveProperty("message")
         expect(response.status).toBe(404)
      
     })
@@ -99,4 +99,4 @@ describe("/requests", () => {
      
     })
 
-}) */
+}) 
