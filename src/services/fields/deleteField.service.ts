@@ -1,6 +1,5 @@
 import AppDataSource from '../../data-source';
 import { Field } from '../../entities/fields.entity';
-import { AppError } from '../../errors/appError';
 
 const deleteFieldService = async (id: string): Promise<boolean> => {
   const fieldRepository = AppDataSource.getRepository(Field);

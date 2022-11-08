@@ -5,13 +5,15 @@ import { Owner } from '../../entities/owner.entity';
 import { AppError } from '../../errors/appError';
 import { IFieldRequest } from '../../interface/fields/fields';
 
-const createFieldService = async (fieldData: IFieldRequest): Promise<Field> => {
+const createFieldService = async (
+  fieldData: IFieldRequest,
+  id: string
+): Promise<Field> => {
   const fieldsRepository = AppDataSource.getRepository(Field);
-
   const ownersRepository = AppDataSource.getRepository(Owner);
-  const adressesRepository = AppDataSource.getRepository(Adress);
+  const adressesRepository = AppDataSource.getRepository(Address);
 
-  const getOwner = await ownersRepository.findOneBy({ id: fieldData.ownerId });
+  const getOwner = await ownersRepository.findOneBy({ id: id });
 
   if (!getOwner) {
     throw new AppError(404, 'Owner not found!');
@@ -23,9 +25,8 @@ const createFieldService = async (fieldData: IFieldRequest): Promise<Field> => {
   const newField = new Field();
   newField.name = fieldData.name;
   newField.isActive = fieldData.isActive;
-  newField.owners = getOwner;
-  newField.adresses = newAdresses;
-
+  newField.owner = getOwner;
+  newField.address = newAdresses;
 
   const field: Field = fieldsRepository.create(newField);
   await fieldsRepository.save(field);
