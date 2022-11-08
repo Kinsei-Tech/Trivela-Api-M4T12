@@ -4,7 +4,8 @@ import createFieldService from '../../services/fields/createField.service';
 
 const createFieldController = async (req: Request, res: Response) => {
   const fieldData: IFieldRequest = req.body;
-  const field = await createFieldService(fieldData);
+  const id: string = req.user.id;
+  const field = await createFieldService(fieldData, id);
   return res.status(201).json(field);
 };
 export default createFieldController;
