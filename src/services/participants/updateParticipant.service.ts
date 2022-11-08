@@ -13,11 +13,8 @@ const updateParticipantService = async (
   const participantRepository = AppDataSource.getRepository(Participant);
 
   const findParticipant = await participantRepository.findOneBy({
-    user: { id },
+    id,
   });
-  if (!findParticipant) {
-    throw new AppError(404, 'Participante não encontrado');
-  }
 
   const keys = Object.keys(data);
   if (
@@ -28,13 +25,14 @@ const updateParticipantService = async (
   ) {
     throw new AppError(401, 'Não é possível editar esses valores');
   }
-  await participantRepository.update(findParticipant.id, {
-    position: data.position ? data.position : findParticipant.position,
+
+  await participantRepository.update(findParticipant!.id, {
+    position: data.position ? data.position : findParticipant!.position,
   });
 
-  const participantId = findParticipant.id;
+  const participantId = findParticipant!.id;
   const participant = await participantRepository.findOneBy({
-    id: participantId,
+    id: participantId!,
   });
 
   return participant!;
