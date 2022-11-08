@@ -18,13 +18,13 @@ router.patch(
   updateFieldController
 );
 router.delete(
-  '/:id',
+  '/delete/:id',
   ensureAuthMiddleware,
   isOwnerField,
   deleteFieldController
 );
 router.delete(
-  '/:id',
+  '/deactivate/:id',
   ensureAuthMiddleware,
   isOwnerField,
   softDeleteFieldController
