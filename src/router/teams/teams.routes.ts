@@ -10,8 +10,12 @@ import ensureAuthMiddleware from '../../middlewares/ensureAuth.middleware';
 const router = Router();
 
 router.post('/create', ensureAuthMiddleware, createTeamController);
-router.delete('/deactivate/:id', deactivateTeamController);
-router.delete('/delete/:id', deleteTeamController);
+router.delete(
+  '/deactivate/:id',
+  ensureAuthMiddleware,
+  deactivateTeamController
+);
+router.delete('/delete/:id', ensureAuthMiddleware, deleteTeamController);
 router.get('', ensureAuthMiddleware, listTeamsController);
 router.get('/:id', ensureAuthMiddleware, listTeamController);
 router.patch(
