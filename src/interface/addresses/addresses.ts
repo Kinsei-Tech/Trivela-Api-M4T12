@@ -7,3 +7,7 @@ export interface IAddresses {
   city: string;
   state: string;
 }
+
+export interface IAddressesRequest {
+  address: IAddresses;
+}

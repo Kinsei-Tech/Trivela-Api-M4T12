@@ -1,9 +1,11 @@
-export interface ISocialNetworks {}
-
-export interface ISocialNetworksUpdate {
+export interface ISocialNetworks {
   facebook?: string;
-  whatsapp?: string;
+  whatsApp?: string;
   tiktok?: string;
   instagram?: string;
   linkedin?: string;
+}
+
+export interface ISocialNetworksUpdate {
+  socialNetwork: ISocialNetworks;
 }

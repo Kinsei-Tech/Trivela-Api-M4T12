@@ -1,4 +1,4 @@
-import { Repository, SimpleConsoleLogger } from 'typeorm';
+import { Repository } from 'typeorm';
 import AppDataSource from '../../data-source';
 import { Address } from '../../entities/address.entity';
 import { Position } from '../../entities/position.entity';
@@ -10,10 +10,9 @@ import { IUserUpdate } from '../../interface/users/users';
 const updatedUserService = async (
   id: string,
   update: IUserUpdate
-): Promise<User | null> => {
-  const userRepository: Repository<User> = AppDataSource.getRepository(User);
-  const positionsRepository: Repository<Position> =
-    AppDataSource.getRepository(Position);
+): Promise<User> => {
+  const userRepository = AppDataSource.getRepository(User);
+  const positionsRepository = AppDataSource.getRepository(Position);
   const socialNetworksRepository = AppDataSource.getRepository(SocialNetWork);
   const adressRepository = AppDataSource.getRepository(Address);
 
@@ -48,9 +47,6 @@ const updatedUserService = async (
     });
   }
 
-  /* const adressUser = await adressRepository.findOneBy({
-    id: findUser.address.id,
-  }); */
   if (update.address) {
     await adressRepository.update(findUser.address.id, {
       ...update.address,
@@ -67,7 +63,7 @@ const updatedUserService = async (
     id,
   });
 
-  return findUser;
+  return findUser!;
 };
 
 export default updatedUserService;
