@@ -4,10 +4,10 @@ import { IParticipantUpdate } from '../../interface/participants/participants';
 import updateParticipantService from '../../services/participants/updateParticipant.service';
 
 const updateParticipantController = async (req: Request, res: Response) => {
-  const userId = req.params.id;
+  const id = req.participant.id;
   const data: IParticipantUpdate = req.body;
 
-  const updatedParticipant = await updateParticipantService(userId, data);
+  const updatedParticipant = await updateParticipantService(id, data);
   if (updatedParticipant instanceof Participant) {
     return res.json({
       message: 'Posição do participante alterada com sucesso',
