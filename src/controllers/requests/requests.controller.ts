@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+/*import { Request, Response } from 'express';
 import requestsCreateService from '../../services/requests/requestsCreate.services';
 
 const requestsCreateController = async (req: Request, res: Response) => {
@@ -7,4 +7,4 @@ const requestsCreateController = async (req: Request, res: Response) => {
   return res.status(201).json(createdRequestsInfo);
 };
 
-export default requestsCreateController
+export default requestsCreateController*/
