@@ -2,9 +2,9 @@ import AppDataSource from '../../data-source';
 import { Field } from '../../entities/fields.entity';
 import { AppError } from '../../errors/appError';
 
-const softDeleteFieldService = async (id: string) => {
+const softDeleteFieldService = async (id: string): Promise<void> => {
   const fieldRepository = AppDataSource.getRepository(Field);
-  const field = await fieldRepository.findOneBy({ id });
+  const field: Field | null = await fieldRepository.findOneBy({ id });
 
   if (!field) {
     throw new AppError(404, 'Field not found');
