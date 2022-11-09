@@ -6,7 +6,7 @@ const softDeleteUserController = async (
   res: Response
 ): Promise<Response> => {
   const id: string = req.params.id;
-  const deletedUser = await softDeleteUserService(id);
+  const deletedUser: void = await softDeleteUserService(id);
   return res.status(204).json(deletedUser);
 };
 
