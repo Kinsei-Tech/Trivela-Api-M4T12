@@ -40,13 +40,13 @@ export class Team {
   @Column({ nullable: true })
   maxAge: number;
 
-  @CreateDateColumn({ nullable: true })
+  @CreateDateColumn()
   createdAt: Date;
 
-  @UpdateDateColumn({ nullable: true })
+  @UpdateDateColumn()
   updatedAt: Date;
 
-  @Column('boolean', { default: true, nullable: true })
+  @Column('boolean', { default: true })
   isActive: boolean = true;
 
   @ManyToOne(() => User, (user) => user.team, { eager: true })

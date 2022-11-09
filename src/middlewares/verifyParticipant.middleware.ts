@@ -1,4 +1,4 @@
-/*import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import AppDataSource from '../data-source';
 import { Participant } from '../entities/participant.entity';
 import { AppError } from '../errors/appError';
@@ -9,13 +9,17 @@ const verifyParticipantMiddleware = async (
   res: Response,
   next: NextFunction
 ) => {
-  let usedId;
-  if(req.params.)
-  const userId: string = req.body.userId;
+  let userId = [];
+  if (req.params.userId) {
+    userId.push(req.params.userId);
+  }
+  if (req.body.userId) {
+    userId.push(req.body.userId);
+  }
   const participantRepository = AppDataSource.getRepository(Participant);
 
   const findParticipant = await participantRepository.findOneBy({
-    user: { id: userId },
+    user: { id: userId[0] },
   });
   if (!findParticipant) {
     throw new AppError(404, 'Participante não encontrado');
@@ -38,4 +42,4 @@ const verifyParticipantMiddleware = async (
   }
 };
 
-export default verifyParticipantMiddleware; */
+export default verifyParticipantMiddleware;
