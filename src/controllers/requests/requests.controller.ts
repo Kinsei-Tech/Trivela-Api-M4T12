@@ -3,6 +3,7 @@ import requestsCreateService from '../../services/requests/requestsCreate.servic
 
 const requestsCreateController = async (req: Request, res: Response) => {
   const data = req.body;
+  console.log(data)
   const createdRequestsInfo = await requestsCreateService(data);
   return res.status(201).json(createdRequestsInfo);
 };

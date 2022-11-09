@@ -10,6 +10,7 @@ const AppDataSource = new DataSource(
         entities: ['src/entities/*.ts'],
       }
     : {
+
         type: 'postgres',
         url: process.env.DATABASE_URL,
         ssl:

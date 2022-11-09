@@ -3,7 +3,7 @@ import { User } from '../../entities/user.entity';
 
 const listUsersServices = async (): Promise<User[]> => {
   const userRepository = AppDataSource.getRepository(User);
-  const users = await userRepository.find({ relations: { team: true } });
+  const users = await userRepository.find({relations : {team : true}});
   return users;
 };
 
