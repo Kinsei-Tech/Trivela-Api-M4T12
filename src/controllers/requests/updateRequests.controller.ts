@@ -1,4 +1,4 @@
-/*import { Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { instanceToPlain } from 'class-transformer';
 import { Request as RequestEntity } from '../../entities/requests.entity';
 import { IRequest } from '../../interface/requests/requests';
@@ -10,10 +10,12 @@ const updateRequestsController = async (
 ): Promise<Response> => {
   const id: string = req.params.id;
   const update: IRequest = req.body;
-  const updatedRequest: RequestEntity | null = await updatedRequestService(id, update);
+  const updatedRequest: RequestEntity | null = await updatedRequestService(
+    id,
+    update
+  );
 
   return res.json(instanceToPlain(updatedRequest));
 };
 
 export default updateRequestsController;
-
