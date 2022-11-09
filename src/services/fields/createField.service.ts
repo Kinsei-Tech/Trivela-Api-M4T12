@@ -3,7 +3,7 @@ import { Address } from '../../entities/address.entity';
 import { Field } from '../../entities/fields.entity';
 import { Owner } from '../../entities/owner.entity';
 import { AppError } from '../../errors/appError';
-import { IFieldRequest } from '../../interface/fields/fields';
+import { IField, IFieldRequest } from '../../interface/fields/fields';
 
 const createFieldService = async (
   fieldData: IFieldRequest,
@@ -17,6 +17,16 @@ const createFieldService = async (
 
   if (!getOwner) {
     throw new AppError(404, 'Owner not found!');
+  }
+
+  const fields: Field[] = await fieldsRepository.find();
+
+  const nameAlreadyExists: IField | undefined = fields.find(
+    (field) => field.name === fieldData.name
+  );
+
+  if (nameAlreadyExists) {
+    throw new AppError(400, 'Name already exists');
   }
 
   const newAdresses = adressesRepository.create(fieldData.address);
