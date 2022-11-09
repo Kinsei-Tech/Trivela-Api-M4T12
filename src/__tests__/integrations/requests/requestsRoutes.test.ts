@@ -1,8 +1,10 @@
-/* import { DataSource } from "typeorm";
+import { DataSource } from "typeorm";
 import AppDataSource from "../../../data-source";
 import request from "supertest"
 import app from "../../../app";
-import {mokedUser2, mockedUserLogin, mockedTeam, mockedRequest, mockedRequestInvalidTeamId, mockedRequestInvalidPosition} from "../../mocks/requests/index"
+import { mockedRequest, mockedRequestInvalidTeamId, mockedRequestInvalidPosition} from "../../mocks/requests/index"
+import { mockedCorrectLogin, mokedUser } from "../../mocks/login";
+import { mockedTeam0 } from "../../mocks/teams";
 
 
 describe("/requests", () => {
@@ -15,9 +17,12 @@ describe("/requests", () => {
             console.error("Error during Data Source initialization", err)
         })
 
-        await request(app).post('/users').send(mokedUser2)
-        const loginResponse = await request(app).post("/login").send(mockedUserLogin);
-        await request(app).post('/team').set("Authorization", `Bearer ${loginResponse.body.token}`).send(mockedTeam)
+        await request(app).post('/users/create').send(mokedUser)
+        const loginResponse = await request(app).post("/users/login").send(mockedCorrectLogin);
+        await request(app)
+            .post('/teams/create')
+            .set('Authorization', `Bearer ${loginResponse.body.token}`)
+            .send(mockedTeam0);
     })
 
     afterAll(async() => {
@@ -26,16 +31,22 @@ describe("/requests", () => {
 
     test("POST /requests -  Must be able to create a requests",async () => {
       
-        const teams = await request(app).get('/teams')
-        const loginResponse = await request(app).post("/login").send(mokedUser2);
+        const resultLogin = await request(app)
+            .post('/users/login')
+            .send(mockedCorrectLogin);
+  
+        const teams = await request(app).get('/teams').set("Authorization", `Bearer ${resultLogin.body.token}`)
+        const users = await request(app).get('/users').set("Authorization", `Bearer ${resultLogin.body.token}`)
         mockedRequest.teamId = teams.body[0].id
-        const response = await request(app).post('/requests').set("Authorization", `Bearer ${loginResponse.body.token}`).send(mockedRequest)
+        mockedRequest.userId = users.body[0].id
+      
+        const response = await request(app).post('/requests').set("Authorization", `Bearer ${resultLogin.body.token}`).send(mockedRequest)
 
         expect(response.body).toHaveProperty("id")
         expect(response.body).toHaveProperty("status")
-        expect(response.body).toHaveProperty("position")
-        expect(response.body).toHaveProperty("teamId")
-        expect(response.body).toHaveProperty("userId")
+        expect(response.body).toHaveProperty("positions")
+        expect(response.body).toHaveProperty("teams")
+        expect(response.body).toHaveProperty("user")
         expect(response.status).toBe(201)
      
     })
@@ -43,7 +54,7 @@ describe("/requests", () => {
 
     test("POST /requests -  should not be able to create requests without authentication",async () => {
         const teams = await request(app).get('/teams')
-        mockedRequest.teamId = teams.body[0].id
+        mockedRequest.teamId = teams.body.id
         const response = await request(app).post('/requests').send(mockedRequest)
 
         expect(response.body).toHaveProperty("message")
@@ -52,29 +63,42 @@ describe("/requests", () => {
     })
 
     test("POST /requests -  should not be able to create requests with invalid teamId",async () => { 
-        const loginResponse = await request(app).post("/login").send(mockedUserLogin);
+        const loginResponse = await request(app).post("/login").send(mockedCorrectLogin);
         const response = await request(app).post('/requests').set("Authorization", `Bearer ${loginResponse.body.token}`).send(mockedRequestInvalidTeamId)
 
         expect(response.body).toHaveProperty("message")
-        expect(response.status).toBe(404)
+        expect(response.status).toBe(401)
      
     })
 
     test("POST /requests -  should not be able to create requests with invalid position",async () => { 
-        const loginResponse = await request(app).post("/login").send(mockedUserLogin);
+        const loginResponse = await request(app).post("/login").send(mockedCorrectLogin);
         const response = await request(app).post('/requests').set("Authorization", `Bearer ${loginResponse.body.token}`).send(mockedRequestInvalidPosition)
 
         expect(response.body).toHaveProperty("message")
-        expect(response.status).toBe(404)
+        expect(response.status).toBe(401)
      
     })
 
     test("GET /requests -  Must be able to list all requests",async () => {
-        const response = await request(app).get('/requests')
-        expect(response.body).toHaveLength(1)
+
+        const resultLogin = await request(app)
+            .post('/users/login')
+            .send(mockedCorrectLogin);
+  
+        const teams = await request(app).get('/teams').set("Authorization", `Bearer ${resultLogin.body.token}`)
+        const users = await request(app).get('/users').set("Authorization", `Bearer ${resultLogin.body.token}`)
+        mockedRequest.teamId = teams.body[0].id
+        mockedRequest.userId = users.body[0].id
+      
+        await request(app).post('/requests/').set("Authorization", `Bearer ${resultLogin.body.token}`).send(mockedRequest)
+
+        const response = await request(app).get(`/requests/${teams.body[0].id}`).set("Authorization", `Bearer ${resultLogin.body.token}`)
+
+        expect(response.body[0]).toHaveProperty("id")
+        expect(response.body[0]).toHaveProperty("status")
+        expect(response.body[0]).toHaveProperty("positions")
         expect(response.status).toBe(200)
-     
     })
 
 }) 
-*/
