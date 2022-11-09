@@ -2,7 +2,7 @@ import AppDataSource from '../../data-source';
 import { Field } from '../../entities/fields.entity';
 import { AppError } from '../../errors/appError';
 
-const softDeleteFieldService = async (id: string): Promise<boolean> => {
+const softDeleteFieldService = async (id: string) => {
   const fieldRepository = AppDataSource.getRepository(Field);
   const field = await fieldRepository.findOneBy({ id });
 
@@ -10,12 +10,12 @@ const softDeleteFieldService = async (id: string): Promise<boolean> => {
     throw new AppError(404, 'Field not found');
   }
 
-  if (!field?.isActive) {
+  if (field.isActive === false) {
     throw new AppError(304, 'Unable to delete inactive field');
   }
 
-  field.isActive = false;
-
-  return true;
+  await fieldRepository.update(id, {
+    isActive: false,
+  });
 };
 export default softDeleteFieldService;
