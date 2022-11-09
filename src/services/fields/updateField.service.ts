@@ -19,11 +19,9 @@ const updateFieldService = async (
       address: true,
     },
   });
-  console.log(fields);
   const address = await addressRepository.findOneBy({
     id: fields?.address.id,
   });
-  console.log(address);
 
   const data = Object.keys(update);
 

@@ -4,8 +4,8 @@ import softDeleteFieldService from '../../services/fields/softDeleteField.servic
 const softDeleteFieldController = async (req: Request, res: Response) => {
   const { id } = req.params;
   await softDeleteFieldService(id);
-  return res.status(204).json({
-    message: 'User deleted with sucess!',
+  return res.status(200).json({
+    message: 'Field deleted with success!',
   });
 };
 export default softDeleteFieldController;

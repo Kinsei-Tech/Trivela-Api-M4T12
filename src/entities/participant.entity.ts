@@ -20,6 +20,9 @@ export class Participant {
   @Column()
   position: number;
 
+  @Column({ default: true })
+  isActive: boolean;
+
   @OneToOne(() => User, { eager: true })
   @JoinColumn()
   user: User;

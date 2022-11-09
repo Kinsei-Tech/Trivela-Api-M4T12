@@ -1,46 +1,49 @@
-import { Repository } from 'typeorm';
+/*import { Repository } from 'typeorm';
 import AppDataSource from '../../data-source';
-import { Position } from '../../entities/position.entity';
+import { Participant } from '../../entities/participant.entity';
 import { Request } from '../../entities/requests.entity';
+import { Team } from '../../entities/team.entity';
+import { User } from '../../entities/user.entity';
 import { IRequestUpdate } from '../../interface/requests/requests';
 
 const updatedRequestService = async (
   id: string,
   {
-    positions,
     status
   }: IRequestUpdate
 ): Promise<Request | null> => {
-  const RequestRepository: Repository<Request> = AppDataSource.getRepository(Request);
-  const positionsRepository: Repository<Position> =
-    AppDataSource.getRepository(Position);
-  let findRequest: Request | null = await RequestRepository.findOneBy({
-    id,
-  });
-  
-  const positionsRequest = await positionsRepository.findOneBy({
-    id: findRequest.positions.id,
+  const requestRepository: Repository<Request> = AppDataSource.getRepository(Request);
+  const userRepository: Repository<User> = AppDataSource.getRepository(User);
+  const teamRepository: Repository<Team> = AppDataSource.getRepository(Team);
+  const participantRepository: Repository<Participant> = AppDataSource.getRepository(Participant);
+  let findRequest: Request | null = await requestRepository.findOne({
+    where : {id : id}, relations : ["user", "teams"] 
   });
 
-  await positionsRepository.update(positionsRequest!.id, {
-    fixed: positions?.fixed ? positions.fixed : positionsRequest?.fixed,
-    goalkeeper: positions?.goalkeeper
-      ? positions.goalkeeper
-      : positionsRequest?.goalkeeper,
-    leftwing: positions?.leftwing
-      ? positions.leftwing
-      : positionsRequest?.leftwing,
-    rightwing: positions?.rightwing
-      ? positions.rightwing
-      : positionsRequest?.rightwing,
-    target: positions?.target ? positions.target : positionsRequest?.target,
-  });
+  if (status == 2) {
+    
+    await requestRepository.update(id, {
+      status: status ? status : findRequest?.status,
+    });
 
-  await RequestRepository.update(id, {
-    status: status ? status : findRequest.status,
-    positions: positions ? positions : findRequest.positions,
-  });
-  findRequest = await RequestRepository.findOneBy({
+    const user = await userRepository.findOneBy({ id : findRequest?.user.id });
+    const team = await teamRepository.findOneBy({ id : findRequest?.teams.id });
+    const participant = new Participant
+    participant.position = findRequest!.positions;
+    await participantRepository.save(participant);
+
+    await teamRepository.update(team!.id, {
+      
+    })
+  }
+
+  if (status == 3){
+    await requestRepository.update(id, {
+      status: status? status : findRequest?.status
+    })
+  }
+
+  findRequest = await requestRepository.findOneBy({
     id,
   });
 
@@ -48,3 +51,4 @@ const updatedRequestService = async (
 };
 
 export default updatedRequestService;
+*/

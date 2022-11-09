@@ -4,11 +4,11 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "node .",
     "build": "tsc",
     "dev": "ts-node-dev --ignore-watch node_modules src/server.ts",
     "typeorm": "typeorm-ts-node-commonjs",
-    "test": "cross-env NODE_ENV=test SECRET_KEY=chave_secreta jest --verbose"
+    "test": "cross-env NODE_ENV=test SECRET_KEY=chave_secreta jest --verbose",
+    "start": "node dist/src/server.js"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",

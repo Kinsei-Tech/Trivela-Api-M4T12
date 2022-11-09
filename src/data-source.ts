@@ -16,10 +16,21 @@ const AppDataSource = new DataSource(
         username: process.env.POSTGRES_USER,
         password: process.env.POSTGRES_PASSWORD,
         database: process.env.POSTGRES_DB,
+        url: process.env.DATABASE_URL,
+        ssl:
+          process.env.NODE_ENV === 'production'
+            ? { rejectUnauthorized: false }
+            : false,
         logging: true,
         synchronize: false,
-        entities: ['src/entities/*.ts'],
-        migrations: ['src/migrations/*.ts'],
+        entities:
+          process.env.NODE_ENV === 'production'
+            ? ['dist/src/entities/*.js']
+            : ['src/entities/*.ts'],
+        migrations:
+          process.env.NODE_ENV === 'production'
+            ? ['dist/src/migrations/*.js']
+            : ['src/migrations/*.ts'],
       }
 );
 
