@@ -8,6 +8,11 @@ export interface IFieldRequest {
   isActive: boolean;
 }
 
+export interface IField {
+  name: string;
+  address: IAddresses;
+}
+
 export interface IField extends Omit<IFieldRequest, 'ownerId'> {
   id: string;
   isActive: boolean;
