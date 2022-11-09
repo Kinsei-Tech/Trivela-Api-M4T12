@@ -9,16 +9,8 @@ const updateTeamService = async (
   data: ITeamUpdate,
   id: string
 ): Promise<ITeam> => {
-  const {
-    positions,
-    city,
-    description,
-    fieldsId,
-    maxAge,
-    maxWeight,
-    name,
-    state,
-  } = data;
+  const { positions, city, description, fieldsId, maxAge, maxWeight, state } =
+    data;
   const teamRepository = AppDataSource.getRepository(Team);
   const positionRepository = AppDataSource.getRepository(Position);
   const fieldRepository = AppDataSource.getRepository(Field);
@@ -28,57 +20,53 @@ const updateTeamService = async (
   if (!findTeam) {
     throw new AppError(404, 'Time não encontrado');
   }
+  const positionsTeam = await positionRepository.findOneBy({
+    id: findTeam.positions.id,
+  });
+
   const keys = Object.keys(data);
   if (
     keys.includes('id') ||
     keys.includes('userId') ||
     keys.includes('isActive') ||
-    keys.includes('participantsId')
+    keys.includes('participantsId') ||
+    keys.includes('name')
   ) {
     throw new AppError(
       401,
-      'Valores como id e userId não podem ser alterados. Valores como isActive e participantsId não podem ser alterados nesta rota'
+      'Valores como id, userId e name não podem ser alterados. Valores como isActive e participantsId não podem ser alterados nesta rota'
     );
   }
 
-  let updatedPositions: Position;
   if (positions) {
-    const { fixed, goalkeeper, leftwing, rightwing, target } = positions;
-    updatedPositions = positionRepository.create({
-      fixed,
-      goalkeeper,
-      leftwing,
-      rightwing,
-      target,
+    await positionRepository.update(positionsTeam!.id, {
+      fixed: positions.fixed,
+      goalkeeper: positions.goalkeeper,
+      leftwing: positions.leftwing,
+      rightwing: positions.rightwing,
+      target: positions.target,
     });
-    await positionRepository.save(updatedPositions);
   }
 
-  let updatedFields: Field[] = [];
   if (fieldsId) {
     for (const id of fieldsId) {
       const field = await fieldRepository.findOneBy({ id });
-      field && updatedFields.push(field);
+      findTeam.fields = findTeam.fields.concat(field!);
+      await teamRepository.save(findTeam);
     }
   }
 
-  const treatedData: ITeamUpdate = {
-    city,
-    description,
-    maxAge,
-    maxWeight,
-    name,
-    state,
-    fields: updatedFields.length > 0 ? updatedFields : undefined,
-    positions: updatedPositions!,
-  };
-
   await teamRepository.update(id, {
-    ...findTeam,
-    ...treatedData,
+    city: city ? city : findTeam.city,
+    description: description ? description : findTeam.description,
+    maxAge: maxAge ? maxAge : findTeam.maxAge,
+    maxWeight: maxWeight ? maxWeight : findTeam.maxWeight,
+    state: state ? state : findTeam.state,
   });
 
-  return findTeam;
+  const updatedTeam = await teamRepository.findOneBy({ id });
+
+  return updatedTeam!;
 };
 
 export default updateTeamService;
