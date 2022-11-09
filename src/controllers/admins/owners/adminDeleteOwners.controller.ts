@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import adminDeleteOwnerService from '../../../services/admin/owners/adminDeleteOwners.service';
+import adminDeleteOwnerService from '../../../services/admins/owners/adminDeleteOwners.service';
 
 
 const adminDeleteOwnerController = async (req: Request, res: Response) => {

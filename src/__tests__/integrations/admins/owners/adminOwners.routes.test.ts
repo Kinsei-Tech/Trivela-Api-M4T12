@@ -6,7 +6,7 @@ import { mockedOwnerRequest } from '../../../mocks/owners';
 
 jest.setTimeout(30000);
 
-describe('/admin/owners', () => {
+describe('/admins/owners', () => {
   let connection: DataSource;
 
   beforeAll(async () => {
@@ -22,94 +22,94 @@ describe('/admin/owners', () => {
     await connection.destroy();
   });
 
-  test('SOFTDELETE /admin/owners/deactivate/:id -  should not be able to delete owner without authentication', async () => {
+  test('SOFTDELETE /admins/owners/deactivate/:id -  should not be able to delete owner without authentication', async () => {
     request(app)
       .post('/owners')
       .send(mockedOwnerRequest);
     const adminLoginResponse = await request(app)
-      .post('/admin/login')
+      .post('/admins/login')
       .send(mockedAdminLogin);
     const ownerTobeDeleted = await request(app)
-      .get('/admin/owners')
+      .get('/admins/owners')
       .set('Authorization', `Bearer ${adminLoginResponse.body.token}`);
 
     const response = await request(app).delete(
-      `/admin/owners/deactivate/${ownerTobeDeleted.body[0].id}`
+      `/admins/owners/deactivate/${ownerTobeDeleted.body[0].id}`
     );
 
     expect(response.body).toHaveProperty('message');
     expect(response.status).toBe(401);
   });
 
-  test('SOFTDELETE /admin/owners/deactivate/:id -  Must be able to soft delete owner', async () => {
-    await request(app).post('/admin/owners').send(mockedOwnerRequest);
+  test('SOFTDELETE /admins/owners/deactivate/:id -  Must be able to soft delete owner', async () => {
+    await request(app).post('/admins/owners').send(mockedOwnerRequest);
 
     const adminLoginResponse = await request(app)
-      .post('/admin/login')
+      .post('/admins/login')
       .send(mockedAdminLogin);
     const ownerTobeDeleted = await request(app)
-      .get('/admin/owners')
+      .get('/admins/owners')
       .set('Authorization', `Bearer ${adminLoginResponse.body.token}`);
 
     const response = await request(app)
-      .delete(`/admin/owners/deactivate/${ownerTobeDeleted.body[0].id}`)
+      .delete(`/admins/owners/deactivate/${ownerTobeDeleted.body[0].id}`)
       .set('Authorization', `Bearer ${adminLoginResponse.body.token}`);
     const findOwner = await request(app)
-      .get('/admin/owners')
+      .get('/admins/owners')
       .set('Authorization', `Bearer ${adminLoginResponse.body.token}`);
     expect(response.status).toBe(204);
     expect(findOwner.body[0].isActive).toBe(false);
   });
 
-  test("SOFTDELETE /admin/owners/deactivate/:id -  Shouldn't be able to delete owner with isActive = false", async () => {
+  test("SOFTDELETE /admins/owners/deactivate/:id -  Shouldn't be able to delete owner with isActive = false", async () => {
     await request(app).post('/owners').send(mockedOwnerRequest);
 
     const adminLoginResponse = await request(app)
-      .post('/admin/login')
+      .post('/admins/login')
       .send(mockedAdminLogin);
     const ownerTobeDeleted = await request(app)
-      .get('/admin/owners')
+      .get('/admins/owners')
       .set('Authorization', `Bearer ${adminLoginResponse.body.token}`);
 
     const response = await request(app)
-      .delete(`/admin/owners/deactivate/${ownerTobeDeleted.body[0].id}`)
+      .delete(`/admins/owners/deactivate/${ownerTobeDeleted.body[0].id}`)
       .set('Authorization', `Bearer ${adminLoginResponse.body.token}`);
     expect(response.status).toBe(400);
     expect(response.body).toHaveProperty('message');
   });
 
-  test('SOFTDELETE /admin/owners/deactivate/:id-  Should not be able to delete owner with invalid id', async () => {
+  test('SOFTDELETE /admins/owners/deactivate/:id-  Should not be able to delete owner with invalid id', async () => {
     await request(app).post('/owners').send(mockedOwnerRequest);
 
     const adminLoginResponse = await request(app)
-      .post('/admin/login')
+      .post('/admins/login')
       .send(mockedAdminLogin);
 
     const response = await request(app)
-      .delete(`/admin/owners/deactivate/13970660-5dbe-423a-9a22-5c23b37943cf`)
+      .delete(`/admins/owners/deactivate/13970660-5dbe-423a-9a22-5c23b37943cf`)
       .set('Authorization', `Bearer ${adminLoginResponse.body.token}`);
     expect(response.status).toBe(404);
     expect(response.body).toHaveProperty('message');
   });
 
-  test('DELETE /admin/owners/:id-  It should be possible to delete the owner from the database', async () => {
+  test('DELETE /admins/owners/:id-  It should be possible to delete the owner from the database', async () => {
     await request(app).post('/owners').send(mockedOwnerRequest);
 
     const adminLoginResponse = await request(app)
-      .post('/admin/login')
+      .post('/admins/login')
       .send(mockedAdminLogin);
     const ownerTobeDeleted = await request(app)
-      .get('/admin/owners')
+      .get('/admins/owners')
       .set('Authorization', `Bearer ${adminLoginResponse.body.token}`);
 
     const response = await request(app)
-      .delete(`/admin/owners/${ownerTobeDeleted.body[0].id}`)
+      .delete(`/admins/owners/${ownerTobeDeleted.body[0].id}`)
       .set('Authorization', `Bearer ${adminLoginResponse.body.token}`);
 
     expect(response.status).toBe(204);
   });
 
-  test('DELETE /admin/owners/:id-  Should not be able to delete owner with invalid id', async () => {
+  test('DELETE /admins/owners/:id-  Should not be able to delete owner with invalid id', async () => {
     await request(app).post('/owners').send(mockedOwnerRequest);
 
     const adminLoginResponse = await request(app)
@@ -117,22 +117,22 @@ describe('/admin/owners', () => {
       .send(mockedAdminLogin);
 
     const response = await request(app)
-      .delete(`/admin/owners/deactivate/13970660-5dbe-423a-9a22-5c23b37943cf`)
+      .delete(`/admins/owners/deactivate/13970660-5dbe-423a-9a22-5c23b37943cf`)
       .set('Authorization', `Bearer ${adminLoginResponse.body.token}`);
     expect(response.status).toBe(404);
     expect(response.body).toHaveProperty('message');
   });
 
-  test('DELETE /admin/owners/:id -  should not be able to delete owner without authentication', async () => {
+  test('DELETE /admins/owners/:id -  should not be able to delete owner without authentication', async () => {
     const adminLoginResponse = await request(app)
-      .post('/admin/login')
+      .post('/admins/login')
       .send(mockedAdminLogin);
     const ownerTobeDeleted = await request(app)
-      .get('/admin/owners')
+      .get('/admins/owners')
       .set('Authorization', `Bearer ${adminLoginResponse.body.token}`);
 
     const response = await request(app).delete(
-      `/admin/owners/deactivate/${ownerTobeDeleted.body[0].id}`
+      `/admins/owners/deactivate/${ownerTobeDeleted.body[0].id}`
     );
 
     expect(response.body).toHaveProperty('message');
