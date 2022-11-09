@@ -1,4 +1,4 @@
-import AppDataSource from '../../data-source';
+/*import AppDataSource from '../../data-source';
 import { User } from '../../entities/user.entity';
 import { Request } from '../../entities/requests.entity';
 import { AppError } from '../../errors/appError';
@@ -39,4 +39,4 @@ const requestsCreateService = async (data: IRequest): Promise<Request> => {
 
   return newRequests;
 };
-export default requestsCreateService;
+export default requestsCreateService;*/

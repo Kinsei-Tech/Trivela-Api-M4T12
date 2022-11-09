@@ -13,7 +13,7 @@ const createUserServices = async (userData: IUserRequest): Promise<User> => {
   const positonsRepository = AppDataSource.getRepository(Position);
   const requestRepository = AppDataSource.getRepository(Request);
 
-  let users = await userRepository.find();
+  const users: User[] = await userRepository.find();
 
   const emailAlreadyExists: IUser | undefined = users.find(
     (user) => user.email === userData.email
@@ -22,7 +22,7 @@ const createUserServices = async (userData: IUserRequest): Promise<User> => {
     throw new AppError(400, 'Email already exists');
   }
 
-  const addresses = addressRepository.create({
+  const addresses: Address = addressRepository.create({
     state: userData.address.state,
     city: userData.address.city,
     district: userData.address.district,
@@ -33,7 +33,7 @@ const createUserServices = async (userData: IUserRequest): Promise<User> => {
   });
   await addressRepository.save(addresses);
 
-  const position = positonsRepository.create({
+  const position: Position = positonsRepository.create({
     fixed: userData.position.fixed,
     leftwing: userData.position.leftwing,
     goalkeeper: userData.position.goalkeeper,
@@ -43,7 +43,7 @@ const createUserServices = async (userData: IUserRequest): Promise<User> => {
   await positonsRepository.save(position);
 
   const hashedPassword: string = await hash(userData.password, 10);
-  const newUser = new User();
+  const newUser: User = new User();
   newUser.name = userData.name;
   newUser.email = userData.email;
   newUser.password = hashedPassword;
@@ -59,7 +59,9 @@ const createUserServices = async (userData: IUserRequest): Promise<User> => {
   const user: User = userRepository.create(newUser);
   await userRepository.save(user);
 
-  const userCreated = await userRepository.findOneBy({ id: user.id });
+  const userCreated: User | null = await userRepository.findOneBy({
+    id: user.id,
+  });
 
   return userCreated!;
 };

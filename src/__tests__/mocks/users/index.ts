@@ -1,4 +1,9 @@
-export const mokedUser2 = {
+import { IAddressesRequest } from '../../../interface/addresses/addresses';
+import { ISocialNetworksUpdate } from '../../../interface/netWorks/networks';
+import { IPositionsRequestTest } from '../../../interface/positions/positions';
+import { IUserRequest } from '../../../interface/users/users';
+
+export const mokedUser2: IUserRequest = {
   name: 'Trivelinha',
   email: 'trivelinha2@email.com',
   password: '123456',
@@ -18,7 +23,6 @@ export const mokedUser2 = {
     state: 'MG',
   },
   position: {
-    id: '02',
     target: true,
     goalkeeper: false,
     leftwing: false,
@@ -28,14 +32,14 @@ export const mokedUser2 = {
   isExercising: true,
 };
 
-export const mokedUserNewSocialNetwork = {
+export const mokedUserNewSocialNetwork: ISocialNetworksUpdate = {
   socialNetwork: { facebook: 'https://facebook/trivelinha' },
 };
 
-export const mokedUserUpdateSocialNetwork = {
+export const mokedUserUpdateSocialNetwork: ISocialNetworksUpdate = {
   socialNetwork: { whatsApp: '99999999999' },
 };
-export const mokedUserUpdatePositions = {
+export const mokedUserUpdatePositions: IPositionsRequestTest = {
   positions: {
     target: true,
     goalkeeper: true,
@@ -45,7 +49,7 @@ export const mokedUserUpdatePositions = {
   },
 };
 
-export const mokedUserupdateAdress = {
+export const mokedUserupdateAdress: IAddressesRequest = {
   address: {
     street: 'esquina com meia',
     district: 'Hueco',

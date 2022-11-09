@@ -3,6 +3,7 @@ import 'express-async-errors';
 import express, { Request, Response, NextFunction } from 'express';
 import usersRoutes from './router/users/users.routes';
 import teamsRoutes from './router/teams/teams.routes';
+import participantesRoutes from './router/participants/participants.routes';
 import { AppError } from './errors/appError';
 import userLoginRouter from './router/login/userLogin.routes';
 import ownerRouter from './router/owners/owners.routes';
@@ -15,6 +16,7 @@ app.use(express.json());
 
 app.use('/users', usersRoutes);
 app.use('/teams', teamsRoutes);
+app.use('/participants', participantesRoutes);
 app.use('/users/login', userLoginRouter);
 app.use('/owners', ownerRouter);
 app.use('/owners/login', ownerLoginRouter);

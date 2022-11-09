@@ -13,3 +13,7 @@ export interface IParticipant
   team: ITeam;
   user: IUser;
 }
+
+export interface IParticipantUpdate {
+  position: number;
+}
