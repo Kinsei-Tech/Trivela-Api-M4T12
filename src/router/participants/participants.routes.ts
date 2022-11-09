@@ -6,23 +6,23 @@ import listParticipantsPerTeamController from '../../controllers/participants/li
 import updateParticipantController from '../../controllers/participants/updateParticipant.controller';
 import ensureAuthMiddleware from '../../middlewares/ensureAuth.middleware';
 import isTeamOwnerMiddleware from '../../middlewares/isTeamOwner.middleware';
-/* import verifyParticipantMiddleware from '../../middlewares/verifyParticipant.middleware'; */
+import verifyParticipantMiddleware from '../../middlewares/verifyParticipant.middleware';
 
 const router = Router();
 
 router.post('/create', ensureAuthMiddleware, createParticipantController);
 router.delete(
-  '/deactivate/:id', //id = id do time!
+  '/deactivate/:id/:userId', //id = id do time!
   ensureAuthMiddleware,
   isTeamOwnerMiddleware,
-  /*   verifyParticipantMiddleware, */
+  verifyParticipantMiddleware,
   deactivateParticipantController
 );
 router.delete(
-  '/delete/:id', //id = id do time!
+  '/delete/:id/:userId', //id = id do time!
   ensureAuthMiddleware,
   isTeamOwnerMiddleware,
-  /*   verifyParticipantMiddleware, */
+  verifyParticipantMiddleware,
   deleteParticipantController
 );
 router.get(
@@ -35,7 +35,7 @@ router.patch(
   '/update/:id/:userId', //id = id do time!
   ensureAuthMiddleware,
   isTeamOwnerMiddleware,
-  /*   verifyParticipantMiddleware, */
+  verifyParticipantMiddleware,
   updateParticipantController
 );
 
