@@ -7,10 +7,7 @@ const deactivateParticipantService = async (id: string) => {
 
   const findParticipant = await participantRepository.findOneBy({ id });
 
-  if (!findParticipant) {
-    throw new AppError(404, 'Participante não encontrado');
-  }
-  if (findParticipant.isActive === false) {
+  if (findParticipant && findParticipant.isActive === false) {
     throw new AppError(400, 'O participante já está desativado');
   }
 
