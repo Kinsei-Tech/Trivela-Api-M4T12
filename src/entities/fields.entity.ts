@@ -19,7 +19,7 @@ export class Field {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ unique: true })
   name: string;
 
   @Column('boolean', { default: true, nullable: true })
