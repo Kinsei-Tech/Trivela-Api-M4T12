@@ -3,12 +3,12 @@ import deleteRequestsController from '../../controllers/requests/deleteRequests.
 import requestsCreateController from '../../controllers/requests/requests.controller';
 import requestsListController from '../../controllers/requests/requestsList.controller';
 import updateRequestsController from '../../controllers/requests/updateRequests.controller';
-/* import { authUser } from '../middlewares/authUser.middleware'; */
+import ensureAuthMiddleware from '../../middlewares/ensureAuth.middleware';
 
 const requestsRoutes = Router();
-requestsRoutes.post('', /*authUser*/ requestsCreateController);
-requestsRoutes.get('/:id', requestsListController);
-requestsRoutes.delete('/delete/:id', deleteRequestsController);
-requestsRoutes.patch('/response/:id', updateRequestsController);
+requestsRoutes.post('', ensureAuthMiddleware, requestsCreateController);
+requestsRoutes.get('/:id', ensureAuthMiddleware, requestsListController);
+requestsRoutes.delete('/delete/:id', ensureAuthMiddleware, deleteRequestsController);
+requestsRoutes.patch('/response/:id', ensureAuthMiddleware, updateRequestsController);
 
 export default requestsRoutes;
