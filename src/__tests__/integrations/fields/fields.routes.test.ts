@@ -32,10 +32,12 @@ describe('/fields', () => {
     const ownerLogin = await request(app)
       .post('/owners/login')
       .send(mockedOwnerLogin);
+
     const resultCreateField = await request(app)
       .post('/fields')
       .set('Authorization', `Bearer ${ownerLogin.body.token}`)
       .send(mockedField);
+
     expect(resultCreateField.body).toHaveProperty('id');
     expect(resultCreateField.body).toHaveProperty('name');
     expect(resultCreateField.body.address).toHaveProperty('street');
@@ -48,7 +50,21 @@ describe('/fields', () => {
     expect(resultCreateField.status).toBe(201);
   });
 
-  test('GET /fields -> should be able to list fields by owner', async () => {
+  test('POST /fields -> Should not be able to create an existing field', async () => {
+    const ownerLogin = await request(app)
+      .post('/owners/login')
+      .send(mockedOwnerLogin);
+
+    const resultCreateField = await request(app)
+      .post('/fields')
+      .set('Authorization', `Bearer ${ownerLogin.body.token}`)
+      .send(mockedField);
+
+    expect(resultCreateField.body).toHaveProperty('message');
+    expect(resultCreateField.status).toBe(400);
+  });
+
+  test('GET /fields -> should be able to list fields with auth', async () => {
     const ownerLogin = await request(app)
       .post('/owners/login')
       .send(mockedOwnerLogin);
@@ -80,7 +96,16 @@ describe('/fields', () => {
     expect(response.status).toBe(200);
   });
 
-  test('PATCH /fields -> should be able to update field', async () => {
+  test('GET /fields -> should not be able to list fields without auth', async () => {
+    const response = await request(app)
+      .get('/fields/owners')
+      .set('Authorization', `Bearer`);
+
+    expect(response.body).toHaveProperty('message');
+    expect(response.status).toBe(401);
+  });
+
+  test('PATCH /fields/owners:id -> should be able to update field', async () => {
     const ownerLogin = await request(app)
       .post('/owners/login')
       .send(mockedOwnerLogin);
@@ -108,7 +133,66 @@ describe('/fields', () => {
     expect(response.status).toBe(201);
   });
 
-  test('SOFTDELETE /fields/deactivate:id -  Must be able to soft delete field', async () => {
+  test('PATCH /fields/owners:id -> Should not be able to update an field if not authenticated', async () => {
+    const ownerLogin = await request(app)
+      .post('/owners/login')
+      .send(mockedOwnerLogin);
+
+    const fieldTobeUpdateRequest = await request(app)
+      .get('/fields/owners')
+      .set('Authorization', `Bearer ${ownerLogin.body.token}`);
+
+    const fieldTobeUpdateId = fieldTobeUpdateRequest.body.id;
+    const response = await request(app)
+      .patch(`/fields/owners/${fieldTobeUpdateId}`)
+      .set('Authorization', `Bearer`)
+      .send(mockedUpdateField);
+
+    expect(response.body).toHaveProperty('message');
+    expect(response.status).toBe(401);
+  });
+
+  test('PATCH /fields/owners:id -> Should not be able to update field with invalid id', async () => {
+    const ownerLogin = await request(app)
+      .post('/owners/login')
+      .send(mockedOwnerLogin);
+
+    const fieldTobeUpdateRequest = await request(app)
+      .get('/fields/owners')
+      .set('Authorization', `Bearer ${ownerLogin.body.token}`);
+
+    const fieldTobeUpdateId = fieldTobeUpdateRequest.body.id;
+    const response = await request(app)
+      .patch(`/fields/owners/13970260-5dbe-323a-7a9d-5c93b37943cf`)
+      .set('Authorization', `Bearer ${ownerLogin.body.token}`)
+      .send(mockedUpdateField);
+
+    expect(response.body).toHaveProperty('message');
+    expect(response.status).toBe(404);
+  });
+
+  test('PATCH /fields/owners:id -> should not be able to update id field', async () => {
+    const newValues = { id: '13970260-5dbe-323a-7a9d-5c93b37943cf' };
+
+    const ownerLogin = await request(app)
+      .post('/owners/login')
+      .send(mockedOwnerLogin);
+
+    const fieldTobeUpdateRequest = await request(app)
+      .get('/fields/owners')
+      .set('Authorization', `Bearer ${ownerLogin.body.token}`);
+
+    const fieldTobeUpdateId = fieldTobeUpdateRequest.body.id;
+    const response = await request(app)
+      .patch(`/fields/owners/${fieldTobeUpdateId}`)
+      .set('Authorization', `Bearer ${ownerLogin.body.token}`)
+      .send(newValues);
+
+    expect(response.body).toHaveProperty('message');
+    expect(response.status).toBe(401);
+  });
+
+  test('SOFTDELETE /fields/deactivate:id ->  Must be able to soft delete field', async () => {
     const ownerLogin = await request(app)
       .post('/owners/login')
       .send(mockedOwnerLogin);
@@ -134,7 +218,42 @@ describe('/fields', () => {
     expect(response.status).toBe(200);
   });
 
-  test('DELETE /fields/delete:id', async () => {
+  test('SOFTDELETE /fields/deactivate:id -> should not be able to delete field without authentication', async () => {
+    const ownerLogin = await request(app)
+      .post('/owners/login')
+      .send(mockedOwnerLogin);
+
+    const resultCreateField = await request(app)
+      .post('/fields')
+      .set('Authorization', `Bearer ${ownerLogin.body.token}`)
+      .send(mockedField);
+
+    const findField = await request(app)
+      .get('/fields/owners')
+      .set('Authorization', `Bearer ${ownerLogin.body.token}`);
+
+    const response = await request(app)
+      .delete(`/fields/deactivate/${findField.body.id}`)
+      .set('Authorization', `Bearer`);
+
+    expect(response.body).toHaveProperty('message');
+    expect(response.status).toBe(401);
+  });
+
+  test('SOFTDELETE /fields/deactivate:id -> Should not be able to delete field with invalid id', async () => {
+    const ownerLogin = await request(app)
+      .post('/owners/login')
+      .send(mockedOwnerLogin);
+
+    const response = await request(app)
+      .delete(`/fields/deactivate/54970260-5dbe-323a-7a9d-5g93b37943wz`)
+      .set('Authorization', `Bearer ${ownerLogin.body.token}`);
+
+    expect(response.status).toBe(404);
+    expect(response.body).toHaveProperty('message');
+  });
+
+  test('DELETE /fields/delete:id -> should be able to delete the field ', async () => {
     const ownerLogin = await request(app)
       .post('/owners/login')
       .send(mockedOwnerLogin);
@@ -157,5 +276,46 @@ describe('/fields', () => {
       .set('Authorization', `Bearer ${ownerLogin.body.token}`);
 
     expect(response.status).toBe(204);
+  });
+
+  test('DELETE /fields/delete:id -> should not be able to delete field without authentication', async () => {
+    const ownerLogin = await request(app)
+      .post('/owners/login')
+      .send(mockedOwnerLogin);
+
+    const resultCreateField = await request(app)
+      .post('/fields')
+      .set('Authorization', `Bearer ${ownerLogin.body.token}`)
+      .send(mockedField);
+
+    const findField = await request(app)
+      .get('/fields/owners')
+      .set('Authorization', `Bearer ${ownerLogin.body.token}`);
+
+    const response = await request(app)
+      .delete(`/fields/delete/${findField.body.id}`)
+      .set('Authorization', `Bearer`);
+  });
+
+  test('DELETE /fields/delete:id -> Should not be able to delete field with invalid id', async () => {
+    const ownerLogin = await request(app)
+      .post('/owners/login')
+      .send(mockedOwnerLogin);
+
+    const resultCreateField = await request(app)
+      .post('/fields')
+      .set('Authorization', `Bearer ${ownerLogin.body.token}`)
+      .send(mockedField);
+
+    const findField = await request(app)
+      .get('/fields/owners')
+      .set('Authorization', `Bearer ${ownerLogin.body.token}`);
+
+    const response = await request(app).delete(
+      `/fields/delete/${findField.body.id}`
+    );
+
+    expect(response.body).toHaveProperty('message');
+    expect(response.status).toBe(401);
   });
 });
