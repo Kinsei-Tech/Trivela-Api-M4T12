@@ -5,7 +5,7 @@ import updateParticipantService from '../../services/participants/updateParticip
 
 const updateParticipantController = async (req: Request, res: Response) => {
   const id = req.participant.id;
-  const data: IParticipantUpdate = req.body;
+  const data: IParticipantUpdate = req.validatedBody;
 
   const updatedParticipant = await updateParticipantService(id, data);
   if (updatedParticipant instanceof Participant) {

@@ -3,7 +3,7 @@ import { ITeamRequest } from '../../interface/teams/teams';
 import createTeamService from '../../services/teams/createTeam.service';
 
 const createTeamController = async (req: Request, res: Response) => {
-  const teamData: ITeamRequest = req.body;
+  const teamData: ITeamRequest = req.validatedBody;
   const userId = req.user.id;
   const team = await createTeamService(teamData, userId);
 

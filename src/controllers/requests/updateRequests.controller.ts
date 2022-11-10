@@ -9,7 +9,7 @@ const updateRequestsController = async (
   res: Response
 ): Promise<Response> => {
   const id: string = req.params.id;
-  const update: IRequest = req.body;
+  const update: IRequest = req.validatedBody;
   const updatedRequest: RequestEntity | null = await updatedRequestService(
     id,
     update
