@@ -10,7 +10,7 @@ const updateUserController = async (
   res: Response
 ): Promise<Response> => {
   const id: string = req.params.id;
-  const update: IUserUpdate = req.body;
+  const update: IUserUpdate = req.validatedBody;
   const updatedUser: User = await updatedUserService(id, update);
 
   return res.json(instanceToPlain(updatedUser));

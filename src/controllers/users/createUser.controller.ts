@@ -8,7 +8,7 @@ const createUserController = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
-  const userData: IUserRequest = req.body;
+  const userData: IUserRequest = req.validatedBody;
   const user: User = await createUserServices(userData);
   return res.status(201).json(instanceToPlain(user));
 };

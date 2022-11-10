@@ -34,11 +34,11 @@ const createUserServices = async (userData: IUserRequest): Promise<User> => {
   await addressRepository.save(addresses);
 
   const position: Position = positonsRepository.create({
-    fixed: userData.position.fixed,
-    leftwing: userData.position.leftwing,
-    goalkeeper: userData.position.goalkeeper,
-    rightwing: userData.position.rightwing,
-    target: userData.position.target,
+    fixed: userData.positions.fixed,
+    leftwing: userData.positions.leftwing,
+    goalkeeper: userData.positions.goalkeeper,
+    rightwing: userData.positions.rightwing,
+    target: userData.positions.target,
   });
   await positonsRepository.save(position);
 

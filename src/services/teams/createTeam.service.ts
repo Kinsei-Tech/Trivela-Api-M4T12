@@ -5,6 +5,7 @@ import { User } from '../../entities/user.entity';
 import { ITeam, ITeamRequest } from '../../interface/teams/teams';
 import { IField } from '../../interface/fields/fields';
 import { Position } from '../../entities/position.entity';
+import { AppError } from '../../errors/appError';
 
 const createTeamService = async (
   teamData: ITeamRequest,
@@ -27,6 +28,14 @@ const createTeamService = async (
   const positionsRepository = AppDataSource.getRepository(Position);
 
   const user = await userRepository.findOneBy({ id: userId });
+
+  const findName = await teamRepository.findOneBy({ name });
+  if (findName) {
+    throw new AppError(
+      401,
+      `There is already a team with the name '${findName.name}'. Please choose another one.`
+    );
+  }
 
   let fields: IField[] = [];
   if (fieldsId) {

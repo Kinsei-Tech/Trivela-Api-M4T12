@@ -39,13 +39,13 @@ export class User {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @Column()
+  @Column({ nullable: true })
   age: number;
 
-  @Column()
+  @Column({ nullable: true })
   height: number;
 
-  @Column()
+  @Column({ nullable: true })
   weight: number;
 
   @Column()
@@ -54,10 +54,10 @@ export class User {
   @Column()
   isExercising: boolean;
 
-  @Column()
+  @Column({ nullable: true })
   urlImg: string;
 
-  @OneToOne(() => SocialNetWork, { eager: true })
+  @OneToOne(() => SocialNetWork, { eager: true, nullable: true })
   @JoinColumn()
   socialNetwork: SocialNetWork;
 

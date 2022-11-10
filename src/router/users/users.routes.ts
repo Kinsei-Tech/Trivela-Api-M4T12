@@ -9,16 +9,26 @@ import listUsersController from '../../controllers/users/listUsers.controller';
 import listUserController from '../../controllers/users/listUser.controller';
 import ensureAuthMiddleware from '../../middlewares/ensureAuth.middleware';
 import verifyIdAuthMiddleware from '../../middlewares/verifyIdAuth.middleware';
+import validateSchemaMiddleware from '../../middlewares/validateSchema.middleware';
+import {
+  createUserSchema,
+  updateUserSchema,
+} from '../../schemas/users/users.schemas';
 
 const router = Router();
 
-router.post('/create', createUserController);
+router.post(
+  '/create',
+  validateSchemaMiddleware(createUserSchema),
+  createUserController
+);
 router.get('', ensureAuthMiddleware, listUsersController);
 router.get('/:id', ensureAuthMiddleware, listUserController);
 router.patch(
   '/update/:id',
   ensureAuthMiddleware,
   verifyIdAuthMiddleware,
+  validateSchemaMiddleware(updateUserSchema),
   updateUserController
 );
 router.delete(
@@ -34,6 +44,5 @@ router.delete(
   verifyIdAuthMiddleware,
   deleteUserController
 );
-
 
 export default router;

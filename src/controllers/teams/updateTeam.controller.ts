@@ -5,7 +5,7 @@ import updateTeamService from '../../services/teams/updateTeam.service';
 
 const updateTeamController = async (req: Request, res: Response) => {
   const id = req.params.id;
-  const data: ITeamUpdate = req.body;
+  const data: ITeamUpdate = req.validatedBody;
 
   const updatedTeam = await updateTeamService(data, id);
   if (updatedTeam instanceof Team) {
