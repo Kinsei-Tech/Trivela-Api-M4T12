@@ -176,7 +176,8 @@ describe('/users', () => {
     expect(response.body.positions.leftwing).toBe(false);
     expect(response.body.positions.rightwing).toBe(false);
     expect(response.body.positions.fixed).toBe(false);
-    expect(response.status).toBe(200); // trocar o status number da requisição
+    expect(response.status).toBe(200);
+    // trocar o status number da requisição
   });
 
   test('should not be able to update another user positions', async () => {
@@ -219,13 +220,14 @@ describe('/users', () => {
       .patch(`/users/update/${responseAllUser.body[0].id}`)
       .set('Authorization', `Bearer ${resultLogin.body.token}`)
       .send(mokedUserupdateAdress);
+
     expect(response.body.address.street).toBe('esquina com meia');
     expect(response.body.address.district).toBe('Hueco');
     expect(response.body.address.zipCode).toBe('10948340');
     expect(response.body.address.number).toBe('66');
     expect(response.body.address.complement).toBe('vazio');
     expect(response.body.address.city).toBe('Hueco');
-    expect(response.body.address.state).toBe('Mundo');
+    expect(response.body.address.state).toBe('PA');
     expect(response.status).toBe(200);
   });
 

@@ -57,6 +57,6 @@ export const mokedUserupdateAdress: IAddressesRequest = {
     number: '66',
     complement: 'vazio',
     city: 'Hueco',
-    state: 'Mundo',
+    state: 'PA',
   },
 };

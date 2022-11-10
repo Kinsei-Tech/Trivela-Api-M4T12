@@ -25,7 +25,7 @@ ownerRouter.patch(
   '/:id',
   ensureAuthMiddleware,
   verifyIdAuthMiddleware,
-  validateSchemaMiddleware(updateOwnerSchema),
+  /* validateSchemaMiddleware(updateOwnerSchema), */
   updateOwnerController
 );
 ownerRouter.delete(

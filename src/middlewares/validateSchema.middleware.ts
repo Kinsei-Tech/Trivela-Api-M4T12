@@ -29,7 +29,6 @@ const validateSchemaMiddleware =
           delete validatedBody.socialNetwork;
         }
       }
-      console.log(req.validatedBody);
       req.validatedBody = validatedBody;
       return next();
     } catch (error) {
