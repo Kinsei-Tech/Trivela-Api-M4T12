@@ -10,6 +10,7 @@ declare global {
       participant: {
         id: string;
       };
+      validatedBody;
     }
   }
 }
