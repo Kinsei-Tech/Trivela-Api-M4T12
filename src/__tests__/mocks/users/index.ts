@@ -22,7 +22,7 @@ export const mokedUser2: IUserRequest = {
     city: 'Juiz de Fora',
     state: 'MG',
   },
-  position: {
+  positions: {
     target: true,
     goalkeeper: false,
     leftwing: false,

@@ -12,7 +12,7 @@ export interface IUserRequest {
   telephone: string;
   urlImg: string;
   address: IAddresses;
-  position: IPositionsRequest;
+  positions: IPositionsRequest;
   isExercising: boolean;
 }
 
