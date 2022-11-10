@@ -6,11 +6,21 @@ import listParticipantsPerTeamController from '../../controllers/participants/li
 import updateParticipantController from '../../controllers/participants/updateParticipant.controller';
 import ensureAuthMiddleware from '../../middlewares/ensureAuth.middleware';
 import isTeamOwnerMiddleware from '../../middlewares/isTeamOwner.middleware';
+import validateSchemaMiddleware from '../../middlewares/validateSchema.middleware';
 import verifyParticipantMiddleware from '../../middlewares/verifyParticipant.middleware';
+import {
+  createParticipantSchema,
+  updateParticipantSchema,
+} from '../../schemas/participants/participants.schemas';
 
 const router = Router();
 
-router.post('/create', ensureAuthMiddleware, createParticipantController);
+router.post(
+  '/create',
+  ensureAuthMiddleware,
+  validateSchemaMiddleware(createParticipantSchema),
+  createParticipantController
+);
 router.delete(
   '/deactivate/:id/:userId', //id = id do time!
   ensureAuthMiddleware,
@@ -35,6 +45,7 @@ router.patch(
   '/update/:id/:userId', //id = id do time!
   ensureAuthMiddleware,
   isTeamOwnerMiddleware,
+  validateSchemaMiddleware(updateParticipantSchema),
   verifyParticipantMiddleware,
   updateParticipantController
 );

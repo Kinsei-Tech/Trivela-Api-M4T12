@@ -6,17 +6,28 @@ import softDeleteFieldController from '../../controllers/fields/softDeleteField.
 import updateFieldController from '../../controllers/fields/updateField.controller';
 import ensureAuthMiddleware from '../../middlewares/ensureAuth.middleware';
 import isOwnerField from '../../middlewares/isOwnerField.middleware';
+import validateSchemaMiddleware from '../../middlewares/validateSchema.middleware';
 import verifyIdFieldMiddleware from '../../middlewares/verifyIdField.middleware';
+import {
+  createFieldSchema,
+  updateFieldSchema,
+} from '../../schemas/fields/fields.schemas';
 
 const router = Router();
 
-router.post('', ensureAuthMiddleware, createFieldController);
+router.post(
+  '',
+  ensureAuthMiddleware,
+  validateSchemaMiddleware(createFieldSchema),
+  createFieldController
+);
 router.get('/owners', ensureAuthMiddleware, listFieldsController);
 router.patch(
   '/owners/:id',
   ensureAuthMiddleware,
   isOwnerField,
   verifyIdFieldMiddleware,
+  validateSchemaMiddleware(updateFieldSchema),
   updateFieldController
 );
 router.delete(

@@ -7,10 +7,20 @@ import listTeamController from '../../controllers/teams/listTeam.controller';
 import updateTeamController from '../../controllers/teams/updateTeam.controller';
 import ensureAuthMiddleware from '../../middlewares/ensureAuth.middleware';
 import isTeamOwnerMiddleware from '../../middlewares/isTeamOwner.middleware';
+import validateSchemaMiddleware from '../../middlewares/validateSchema.middleware';
+import {
+  createTeamSchema,
+  updateTeamSchema,
+} from '../../schemas/teams/teams.schemas';
 
 const router = Router();
 
-router.post('/create', ensureAuthMiddleware, createTeamController);
+router.post(
+  '/create',
+  ensureAuthMiddleware,
+  validateSchemaMiddleware(createTeamSchema),
+  createTeamController
+);
 router.delete(
   '/deactivate/:id',
   ensureAuthMiddleware,
@@ -26,8 +36,9 @@ router.delete(
 router.get('', ensureAuthMiddleware, listTeamsController);
 router.get('/:id', ensureAuthMiddleware, listTeamController);
 router.patch(
-  '/update/:id' /* verifyUpdateData,*/,
+  '/update/:id',
   ensureAuthMiddleware,
+  validateSchemaMiddleware(updateTeamSchema),
   isTeamOwnerMiddleware,
   updateTeamController
 );
