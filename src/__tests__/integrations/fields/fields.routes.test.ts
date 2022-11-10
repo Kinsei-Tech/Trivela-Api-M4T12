@@ -21,7 +21,6 @@ describe('/fields', () => {
       .catch((error) => {
         console.log('Error during Data Source initialization', error);
       });
-    await request(app).post('/owners').send(mockedcreateOwner);
   });
 
   afterAll(async () => {
@@ -295,6 +294,9 @@ describe('/fields', () => {
     const response = await request(app)
       .delete(`/fields/delete/${findField.body.id}`)
       .set('Authorization', `Bearer`);
+
+    expect(response.body).toHaveProperty('message');
+    expect(response.status).toBe(401);
   });
 
   test('DELETE /fields/delete:id -> Should not be able to delete field with invalid id', async () => {
