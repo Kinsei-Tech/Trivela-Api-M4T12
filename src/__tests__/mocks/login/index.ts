@@ -20,7 +20,7 @@ export const mokedUser = {
     city: 'Juiz de Fora',
     state: 'MG',
   },
-  position: {
+  positions: {
     id: '02',
     target: true,
     goalkeeper: false,

@@ -22,7 +22,7 @@ export const mokedUser2: IUserRequest = {
     city: 'Juiz de Fora',
     state: 'MG',
   },
-  position: {
+  positions: {
     target: true,
     goalkeeper: false,
     leftwing: false,
@@ -57,6 +57,6 @@ export const mokedUserupdateAdress: IAddressesRequest = {
     number: '66',
     complement: 'vazio',
     city: 'Hueco',
-    state: 'Mundo',
+    state: 'PA',
   },
 };

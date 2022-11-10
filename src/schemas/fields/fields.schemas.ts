@@ -6,7 +6,6 @@ import {
 
 export const createFieldSchema = yup.object().shape({
   name: yup.string().required(),
-  ownerId: yup.string().required(),
   address: createAddressSchema.required(),
 });
 

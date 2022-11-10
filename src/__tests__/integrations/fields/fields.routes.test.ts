@@ -28,10 +28,12 @@ describe('/fields', () => {
   });
 
   test('POST /fields -> Must be able to create an field', async () => {
+    const createOwner = await request(app)
+      .post('/owners')
+      .send(mockedcreateOwner);
     const ownerLogin = await request(app)
       .post('/owners/login')
       .send(mockedOwnerLogin);
-
     const resultCreateField = await request(app)
       .post('/fields')
       .set('Authorization', `Bearer ${ownerLogin.body.token}`)

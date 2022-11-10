@@ -27,7 +27,7 @@ router.patch(
   ensureAuthMiddleware,
   isOwnerField,
   verifyIdFieldMiddleware,
-  validateSchemaMiddleware(updateFieldSchema),
+  /*   validateSchemaMiddleware(updateFieldSchema), */
   updateFieldController
 );
 router.delete(

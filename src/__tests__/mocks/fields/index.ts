@@ -46,7 +46,6 @@ export const mockedOwnerLogin = {
   password: '123456',
 };
 
-
 export const mockedcreateOwner = {
   name: 'Richard',
   email: 'richzago@email.com',
